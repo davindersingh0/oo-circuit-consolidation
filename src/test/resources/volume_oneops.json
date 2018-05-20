@@ -1,0 +1,104 @@
+{
+	"ciClassId": 36262,
+	"nsId": 361973158,
+	"ciStateId": 100,
+	"attributes": {
+		"mode": {
+			"ciAttributeId": 361973418,
+			"ciId": 361973166,
+			"attributeId": 48745,
+			"attributeName": "mode",
+			"dfValue": "no-raid",
+			"djValue": "no-raid",
+			"created": "Apr 10, 2018 4:18:35 PM",
+			"updated": "Apr 10, 2018 4:18:35 PM"
+		},
+		"size": {
+			"ciAttributeId": 361973417,
+			"ciId": 361973166,
+			"attributeId": 36246,
+			"attributeName": "size",
+			"dfValue": "100%FREE",
+			"djValue": "100%FREE",
+			"created": "Apr 10, 2018 4:18:35 PM",
+			"updated": "Apr 10, 2018 4:18:35 PM"
+		},
+		"mount_point": {
+			"ciAttributeId": 361973424,
+			"ciId": 361973166,
+			"attributeId": 36249,
+			"attributeName": "mount_point",
+			"dfValue": "/var/lib/cassandra",
+			"djValue": "/var/lib/cassandra",
+			"created": "Apr 10, 2018 4:18:35 PM",
+			"updated": "Apr 10, 2018 4:18:35 PM"
+		},
+		"options": {
+			"ciAttributeId": 361973420,
+			"ciId": 361973166,
+			"attributeId": 36250,
+			"attributeName": "options",
+			"dfValue": "",
+			"djValue": "",
+			"created": "Apr 10, 2018 4:18:35 PM",
+			"updated": "Apr 10, 2018 4:18:35 PM"
+		},
+		"based_on_storage": {
+			"ciAttributeId": 0,
+			"ciId": 361973166,
+			"attributeId": 66979,
+			"attributeName": "based_on_storage"
+		},
+		"has_raid": {
+			"ciAttributeId": 361973423,
+			"ciId": 361973166,
+			"attributeId": 69682,
+			"attributeName": "has_raid",
+			"dfValue": "false",
+			"djValue": "false",
+			"created": "Apr 10, 2018 4:18:35 PM",
+			"updated": "Apr 10, 2018 4:18:35 PM"
+		},
+		"raid_options": {
+			"ciAttributeId": 361973422,
+			"ciId": 361973166,
+			"attributeId": 69683,
+			"attributeName": "raid_options",
+			"dfValue": "RAID 0",
+			"djValue": "RAID 0",
+			"created": "Apr 10, 2018 4:18:35 PM",
+			"updated": "Apr 10, 2018 4:18:35 PM"
+		},
+		"device": {
+			"ciAttributeId": 361973419,
+			"ciId": 361973166,
+			"attributeId": 36247,
+			"attributeName": "device",
+			"dfValue": "",
+			"djValue": "",
+			"created": "Apr 10, 2018 4:18:35 PM",
+			"updated": "Apr 10, 2018 4:18:35 PM"
+		},
+		"fstype": {
+			"ciAttributeId": 361973421,
+			"ciId": 361973166,
+			"attributeId": 36248,
+			"attributeName": "fstype",
+			"dfValue": "xfs",
+			"djValue": "xfs",
+			"created": "Apr 10, 2018 4:18:35 PM",
+			"updated": "Apr 10, 2018 4:18:35 PM"
+		}
+	},
+	"ciId": 361973166,
+	"ciName": "volume",
+	"ciClassName": "catalog.oneops.1.Volume",
+	"impl": "oo::chef-11.18.12",
+	"nsPath": "/stgqe/dsing17delme-stgoo/_design/cassandra-oneops",
+	"ciGoid": "361973158-36262-361973166",
+	"ciState": "default",
+	"lastAppliedRfcId": 439868628,
+	"createdBy": "dsing17",
+	"created": "Apr 10, 2018 4:18:35 PM",
+	"updated": "Apr 10, 2018 4:18:35 PM"
+}

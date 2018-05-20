@@ -1,0 +1,10 @@
+build
+.project
+.DS_Store
+.settings/
+target/
+.classpath
+test-output/
+.git
+src/test/java/com/oneops/circuitconsolidation/integrationtest/
+src/test/java/com/oneops/circuitconsolidation/bkp/

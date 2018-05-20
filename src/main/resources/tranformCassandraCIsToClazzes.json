@@ -1,0 +1,10 @@
+{
+	"secgroup": "catalog.oneops.1.Secgroup",
+	"os": "catalog.oneops.1.Os",
+	"fqdn": "catalog.oneops.1.Fqdn",
+	"user-cassandra": "catalog.oneops.1.User",
+	"apache_cassandra": "catalog.oneops.1.Apache_cassandra",
+	"volume": "catalog.oneops.1.Volume",
+	"compute": "catalog.oneops.1.Compute",
+	"java": "catalog.oneops.1.Java"
+}

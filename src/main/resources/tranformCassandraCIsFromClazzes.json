@@ -1,0 +1,13 @@
+{
+	"secgroup": "catalog.Secgroup",
+	"user-cassandra": "catalog.User",
+	"apache_cassandra": "catalog.walmartlabs.Apache_cassandra",
+	"topo": "catalog.walmartlabs.Topo",
+	"compute": "catalog.Compute",
+	"java": "catalog.Java",
+	"fqdn": "catalog.Fqdn",
+	"dseVersion": "catalog.Localvar",
+	"volume": "catalog.Volume",
+	"keyspace": "catalog.walmartlabs.Wmt_keyspace",
+	"keyspace_dbaasuser": "catalog.walmartlabs.Wmt_keyspace"
+}

@@ -1,0 +1,60 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_FALLBACK" />
+		<property name="searchSystemEnvironment" value="true" />
+	</bean>
+
+	<!-- Mybatis components -->
+	<import resource="mybatis-beans.xml" />
+
+
+
+	<bean id="ooCircuitConsolidationRestController"
+		class="com.oneops.circuitconsolidation.controller.OOCircuitConsolidationRestController">
+		<!-- <property name = "message" value = "Hello World!"/> -->
+	</bean>
+
+	<bean id="osComponentService"
+		class="com.oneops.circuitconsolidation.service.OsComponentService">
+		<!-- <property name="gson" ref="gson" /> -->
+		<property name="ciMapper" ref="ciMapper" />
+		<property name="cmProcessor" ref="cmsCmProcessor" />
+		<property name="mdProcessor" ref="cmsMdProcessor" />
+		<property name="mdClassesService" ref="mdClassesService" />
+		<property name="cmciRelationsService" ref="cmciRelationsService" />
+		<property name="gson" ref="gson" />
+	</bean>
+
+	<bean id="mdClassesService"
+		class="com.oneops.circuitconsolidation.service.MDClassesService">
+		<property name="gson" ref="gson" />
+	</bean>
+	<bean id="cmciRelationsService"
+		class="com.oneops.circuitconsolidation.service.CMCIRelationsService">
+		<!-- <property name="gson" ref="gson" /> -->
+		<property name="cmProcessor" ref="cmsCmProcessor" />
+		<property name="mdProcessor" ref="cmsMdProcessor" />
+		<property name="gson" ref="gson" />
+	</bean>
+
+	<bean id="platformCiService"
+		class="com.oneops.circuitconsolidation.service.PlatformCiService">
+		<!-- <property name="gson" ref="gson" /> -->
+		<property name="cmProcessor" ref="cmsCmProcessor" />
+		<property name="ciMapper" ref="ciMapper" />
+		<property name="cmManager" ref="cmsCmManager" />
+		<property name="gson" ref="gson" />
+	</bean>
+<bean id="gson" class="com.google.gson.Gson" />
+
+
+</beans>
