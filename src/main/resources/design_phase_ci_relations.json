@@ -1,0 +1,29 @@
+[
+	{
+		"fromCi": "platform",
+		"toCi": "os",
+		"relationName": "base.Requires",
+		"ciRelationDefaultAttributeList": [
+			{
+				"relationAttributeName": "template",
+				"relationAttributeDfValue": "os",
+				"relationAttributeDjValue": "os"
+			},
+			{
+				"relationAttributeName": "services",
+				"relationAttributeDfValue": "compute,dns,*mirror,*ntp,*windows-domain",
+				"relationAttributeDjValue": "compute,dns,*mirror,*ntp,*windows-domain"
+			}
+		]
+	},
+	{
+		"fromCi": "os",
+		"toCi": "compute",
+		"relationName": "catalog.DependsOn"
+	},
+	{
+		"fromCi": "volume",
+		"toCi": "os",
+		"relationName": "catalog.DependsOn"
+	}
+]

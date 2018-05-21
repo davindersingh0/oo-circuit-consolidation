@@ -15,7 +15,7 @@ public class OOCircuitConsolidationRestController {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
 
-
+//TODO: yet to finalize if circuit consolidation tool needs to be converted into services
   @RequestMapping(value = "/phase/design/platform/{platformID}", method = RequestMethod.GET)
   @ResponseBody
   public ResponseEntity<String> performCircuitConsolidation(@PathVariable long platformID) {

@@ -9,6 +9,9 @@ public interface IConstants {
   String OS_CI_NAME="os";
   String COMPUTE_CI_NAME="compute";
   String comments="Updated for oneops circuit consolidation";
+  String DESIGN_PHASE_CI_RELATIONS_File="design_phase_ci_relations.json";
+  String TRANISTION_PHASE_CI_RELATIONS_File="transition_phase_ci_relations.json";
+  String OPERATE_PHASE_CI_RELATIONS_File="operate_phase_ci_relations.json";
   
   
   

@@ -16,11 +16,11 @@
 	<!-- Mybatis components -->
 	<import resource="mybatis-beans.xml" />
 
-
+	<bean id="gson" class="com.google.gson.Gson" />
 
 	<bean id="ooCircuitConsolidationRestController"
 		class="com.oneops.circuitconsolidation.controller.OOCircuitConsolidationRestController">
-		<!-- <property name = "message" value = "Hello World!"/> -->
+
 	</bean>
 
 	<bean id="osComponentService"
@@ -30,7 +30,7 @@
 		<property name="cmProcessor" ref="cmsCmProcessor" />
 		<property name="mdProcessor" ref="cmsMdProcessor" />
 		<property name="mdClassesService" ref="mdClassesService" />
-		<property name="cmciRelationsService" ref="cmciRelationsService" />
+		<property name="ciRelationsService" ref="ciRelationsService" />
 		<property name="gson" ref="gson" />
 	</bean>
 
@@ -38,12 +38,14 @@
 		class="com.oneops.circuitconsolidation.service.MDClassesService">
 		<property name="gson" ref="gson" />
 	</bean>
-	<bean id="cmciRelationsService"
-		class="com.oneops.circuitconsolidation.service.CMCIRelationsService">
-		<!-- <property name="gson" ref="gson" /> -->
+	<bean id="ciRelationsService"
+		class="com.oneops.circuitconsolidation.service.CIRelationsService">
+		<property name="gson" ref="gson" />
 		<property name="cmProcessor" ref="cmsCmProcessor" />
 		<property name="mdProcessor" ref="cmsMdProcessor" />
-		<property name="gson" ref="gson" />
+		<property name="validateComponentRelations" ref="validateComponentRelations" />
+		 <property name="ciMapper" ref="ciMapper" />
+
 	</bean>
 
 	<bean id="platformCiService"
@@ -54,7 +56,12 @@
 		<property name="cmManager" ref="cmsCmManager" />
 		<property name="gson" ref="gson" />
 	</bean>
-<bean id="gson" class="com.google.gson.Gson" />
+
+	<bean id="validateComponentRelations"
+		class="com.oneops.circuitconsolidation.util.ValidateComponentRelations">
+		<property name="ciMapper" ref="ciMapper" />
+	</bean>
+
 
 
 </beans>
