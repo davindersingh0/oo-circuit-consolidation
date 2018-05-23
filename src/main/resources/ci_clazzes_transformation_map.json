@@ -1,0 +1,7 @@
+{
+	"catalog.Cassandra": "catalog.oneops.1.Cassandra",
+	"catalog.Secgroup": "catalog.oneops.1.Secgroup",
+	"catalog.Volume": "catalog.oneops.1.Volume",
+	"catalog.Fqdn": "catalog.oneops.1.Fqdn",
+	"catalog.Compute": "catalog.oneops.1.Compute"
+}

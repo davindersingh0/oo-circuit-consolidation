@@ -12,7 +12,7 @@ public interface IConstants {
   String DESIGN_PHASE_CI_RELATIONS_File="design_phase_ci_relations.json";
   String TRANISTION_PHASE_CI_RELATIONS_File="transition_phase_ci_relations.json";
   String OPERATE_PHASE_CI_RELATIONS_File="operate_phase_ci_relations.json";
-  
+  String CI_CLAZZES_TRANSFORMATION_MAP_FILE= "ci_clazzes_transformation_map.json";
   
   
 }

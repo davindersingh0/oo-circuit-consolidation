@@ -50,7 +50,6 @@
 
 	<bean id="platformCiService"
 		class="com.oneops.circuitconsolidation.service.PlatformCiService">
-		<!-- <property name="gson" ref="gson" /> -->
 		<property name="cmProcessor" ref="cmsCmProcessor" />
 		<property name="ciMapper" ref="ciMapper" />
 		<property name="cmManager" ref="cmsCmManager" />
@@ -62,6 +61,15 @@
 		<property name="ciMapper" ref="ciMapper" />
 	</bean>
 
+	<bean id="transformCiAttributesService"
+		class="com.oneops.circuitconsolidation.service.TransformCiAttributesService">
+		
+		<property name="gson" ref="gson" />
+		<property name="ciMapper" ref="ciMapper" />
+		<property name="mdProcessor" ref="cmsMdProcessor" />
+		
+	</bean>
+	
 
 
 </beans>
