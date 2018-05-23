@@ -2,6 +2,7 @@ package com.oneops.circuitconsolidation.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -154,25 +155,27 @@ public class TransformCiAttributesService {
 
     String nsForPlatformCiComponents =
         CircuitconsolidationUtil.getnsForPlatformCiComponents(ns, platformName, ooPhase, envName);
-    List<CmsCI> cmsCIList =
-        getTransformationSupportedCmsCiComponentsForPlatform(nsForPlatformCiComponents);
+
+    List<CmsCI> cmsCIList = getTransformationSupportedCmsCiComponentsForPlatform(
+        nsForPlatformCiComponents, this.transformationSupportedCiClazzesConfigsMap.keySet());
+
     log.info("TransformationSupportedCmsCiComponentsForPlatform: " + gson.toJson(cmsCIList));
 
     for (CmsCI cmsCI : cmsCIList) {
 
-      String fromCiClassName = cmsCI.getCiClassName();
-      String toCiClassName = this.transformationSupportedCiClazzesConfigsMap.get(fromCiClassName);
+      String fromCmsClazzName = cmsCI.getCiClassName();
+      String toCmsClazzName = this.transformationSupportedCiClazzesConfigsMap.get(fromCmsClazzName);
 
       CmsCI cmsCI_withTransformedCmsCIAttribute =
-          transformCmsCIClassAttributes(cmsCI, fromCiClassName, toCiClassName);
+          transformCmsCIClassAttributes(cmsCI, toCmsClazzName);
 
       log.info("<cmsCI_withTransformedCmsCIAttribute> {}", cmsCI_withTransformedCmsCIAttribute);
 
-      boolean istransform_CiClassID_ciClassName_ciGoidSuccess =
-          transform_CiClassID_ciClassName_ciGoid(cmsCI, fromCiClassName, toCiClassName);
+      CmsCI transformedCmsCiWith_ClassID_ClassName_Goid =
+          transformCmsCI_ClassID_ClassName_Goid(cmsCI, toCmsClazzName);
 
-      log.info("<istransform_CiClassID_ciClassName_ciGoidSuccess> {}",
-          istransform_CiClassID_ciClassName_ciGoidSuccess);
+      log.info("<transformedCmsCiWith_ClassID_ClassName_Goid> {}",
+          transformedCmsCiWith_ClassID_ClassName_Goid);
 
       isTransformationSuccess = true;
 
@@ -181,46 +184,27 @@ public class TransformCiAttributesService {
     return isTransformationSuccess;
   }
 
-  private boolean transform_CiClassID_ciClassName_ciGoid(CmsCI cmsCI, String fromCiClassName,
-      String toCiClassName) {
-    log.info(
-        "Begin: transform_CiClassID_ciClassName_ciGoid of ciComponentID: {}, ciComponentName {}",
-        cmsCI.getCiId(), cmsCI.getCiName());
 
+  private CmsCI transformCmsCI_ClassID_ClassName_Goid(CmsCI sourceCmsCI, String toCmsClazzName) {
 
-    log.info("get CmsClazz for  componentCiTransformToClass: {}", toCiClassName);
-    CmsClazz toCmsClazz = mdProcessor.getClazz(toCiClassName);
-
-    CmsCI cmsCI_transformed_ClassID_ClassName_Goid =
-        transformCmsCI_ClassID_ClassName_Goid(cmsCI, toCmsClazz);
-    log.info("cmsCI_transformed_ClassID_ClassName_Goid: "
-        + gson.toJson(cmsCI_transformed_ClassID_ClassName_Goid));
-
-    log.info("End: transform_CiClassID_ciClassName_ciGoid of ciComponentID: {}, ciComponentName {}",
-        cmsCI.getCiId(), cmsCI.getCiName());
-    return false;
-  }
-
-
-  private CmsCI transformCmsCI_ClassID_ClassName_Goid(CmsCI sourceCmsCI, CmsClazz cmsClazz) {
+    CmsClazz toCmsClazz = mdProcessor.getClazz(toCmsClazzName);
 
     // update classID for CmsCi
-    sourceCmsCI.setCiClassId(cmsClazz.getClassId());
+    sourceCmsCI.setCiClassId(toCmsClazz.getClassId());
     // update className for CmsCi
-    sourceCmsCI.setCiClassName(cmsClazz.getClassName());
+    sourceCmsCI.setCiClassName(toCmsClazz.getClassName());
     // update className for CmsCi Goid
     sourceCmsCI.setCiGoid(
-        sourceCmsCI.getNsId() + "-" + cmsClazz.getClassId() + "-" + sourceCmsCI.getCiId());
+        sourceCmsCI.getNsId() + "-" + toCmsClazz.getClassId() + "-" + sourceCmsCI.getCiId());
     // TODO: //create database call for update
 
     return sourceCmsCI;
   }
 
 
-  private CmsCI transformCmsCIClassAttributes(CmsCI sourceCmsCI, String fromCiClassName,
-      String toCiClassName) {
+  private CmsCI transformCmsCIClassAttributes(CmsCI sourceCmsCI, String toCmsClazzName) {
 
-    CmsClazz toCmsClazz = mdProcessor.getClazz(toCiClassName);
+    CmsClazz toCmsClazz = mdProcessor.getClazz(toCmsClazzName);
 
 
     Map<String, CmsCIAttribute> cmsCIAttributes_target = new HashMap<String, CmsCIAttribute>();
@@ -281,20 +265,18 @@ public class TransformCiAttributesService {
 
 
   private List<CmsCI> getTransformationSupportedCmsCiComponentsForPlatform(
-      String nsForPlatformCiComponents) {
+      String nsForPlatformCiComponents, Set<String> transformationSupportedCmsCIClazzNameSet) {
 
-    Set<String> transformationSupportedClazzes =
-        this.transformationSupportedCiClazzesConfigsMap.keySet();
-    List<CmsCI> cmsCIList_transformationSupported = new ArrayList<CmsCI>();
+    List<CmsCI> transformationSupportedcmsCIList = new ArrayList<CmsCI>();
 
 
-    for (String fromClazz : transformationSupportedClazzes) {
+    for (String cmsCIClazzName : transformationSupportedCmsCIClazzNameSet) {
 
       List<CmsCI> cmsCIList_fromCMSDB =
-          ciMapper.getCIby3(nsForPlatformCiComponents, fromClazz, null, null);
+          ciMapper.getCIby3(nsForPlatformCiComponents, cmsCIClazzName, null, null);
       if (cmsCIList_fromCMSDB == null || cmsCIList_fromCMSDB.size() == 0) {
-        log.warn("No Ci Component Found for <fromClazz> {} for <nsForPlatformCiComponents> {}",
-            fromClazz, nsForPlatformCiComponents);
+        log.warn("No Ci Component Found for <cmsCIClazzName> {} for <nsForPlatformCiComponents> {}",
+            cmsCIClazzName, nsForPlatformCiComponents);
         continue;
       }
 
@@ -306,12 +288,79 @@ public class TransformCiAttributesService {
 
       // TODO: Apache Cassandra pack for OneOps circuit by default have 2 types of user classes,
       // Need to weigh in while transforming that pack
-      log.info("CiComponent set for transformation: {} ", gson.toJson(cmsCIList_fromCMSDB.get(0)));
-      cmsCIList_transformationSupported.add(cmsCIList_fromCMSDB.get(0));
+      log.info("CiComponent has been set for transformation: {} ",
+          gson.toJson(cmsCIList_fromCMSDB.get(0)));
+      transformationSupportedcmsCIList.add(cmsCIList_fromCMSDB.get(0));
     }
 
-    return cmsCIList_transformationSupported;
+    return transformationSupportedcmsCIList;
 
 
   }
+
+  /********************************************************************
+   * Below code is for CmsCIAttribute cleanupService Delete CmsCIAttribute pertaining to old circuit
+   * Clazz ******************************************************************
+   */
+
+
+  public void cleanUpCmsCIAttributes(String ns, String platformName, String ooPhase,
+      String envName) {
+
+    String nsForPlatformCiComponents =
+        CircuitconsolidationUtil.getnsForPlatformCiComponents(ns, platformName, ooPhase, envName);
+
+    List<CmsCI> cmsCIList =
+        getTransformationSupportedCmsCiComponentsForPlatform(nsForPlatformCiComponents,
+            new HashSet<String>(this.transformationSupportedCiClazzesConfigsMap.values()));
+
+
+    log.info("TransformationSupportedCmsCiComponentsForPlatform for cleanUpCmsCIAttributes: "
+        + gson.toJson(cmsCIList));
+
+    for (CmsCI cmsCI : cmsCIList) {
+
+      String fromCmsClazzName = cmsCI.getCiClassName();
+      List<CmsCIAttribute> deletedCmsCIAttributesList =
+          deleteCmsCIAttributes(cmsCI, fromCmsClazzName);
+
+      log.info("<deletedCmsCIAttributesList> {}", gson.toJson(deletedCmsCIAttributesList));
+
+    }
+  }
+
+  private List<CmsCIAttribute> deleteCmsCIAttributes(CmsCI cmsCI, String fromCmsClazzName) {
+
+    log.info("Begin: deleteCmsCIAttributes() for component: {}", gson.toJson(cmsCI));
+
+    List<CmsCIAttribute> deletedFromCMSDBCmsCIAttributeList = new ArrayList<CmsCIAttribute>();
+
+    CmsClazz fromCmsClazz = mdProcessor.getClazz(fromCmsClazzName);
+    List<CmsClazzAttribute> fromCmsClazzAttributeList = fromCmsClazz.getMdAttributes();
+
+    Map<String, CmsCIAttribute> currentCmsCIAttributesMap = getCIAttrsMapForCiId(cmsCI.getCiId());
+
+
+    // update attributes IDs for CmsCi
+    for (CmsClazzAttribute fromCmsClazzAttribute : fromCmsClazzAttributeList) {
+
+      String attributeName = fromCmsClazzAttribute.getAttributeName();
+      long attributeId = fromCmsClazzAttribute.getAttributeId();
+      CmsCIAttribute cmsCIAttribute = currentCmsCIAttributesMap.get(attributeName);
+
+      // Check if old CMSCiAttribute pertaining to fromCiClassName exists
+      if (cmsCIAttribute != null && cmsCIAttribute.getAttributeId() == attributeId)
+
+      {
+        deletedFromCMSDBCmsCIAttributeList.add(cmsCIAttribute);
+        // TODO: deleteAttribute from CMSDB
+
+      }
+    }
+
+    return deletedFromCMSDBCmsCIAttributeList;
+  }
+
+
+
 }
