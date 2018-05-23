@@ -49,23 +49,24 @@ public class MDClassesService {
     return this.mdclasses_per_oophaseMap.get(phase);
   }
 
-  private Map<String, Map<String, String>> getAllMDClassesForAllOneOpsPhases()
-      throws InvalidCacheLoadException {
-    Map<String, Map<String, String>> mdclasses_per_oophas =
-        new HashMap<String, Map<String, String>>();
+  private Map<String, Map<String, String>> getAllMDClassesForAllOneOpsPhases()   {
+
     try {
+      Gson gson = new Gson();
+    
       @SuppressWarnings("unchecked")
-      Map<String, Map<String, String>> mdclasses_per_oophase =
+      Map<String, Map<String, String>> map =
           gson.fromJson(CircuitconsolidationUtil
               .getFileContent(IConstants.AllMDClassesForAllOneOpsPhases_FILENAME), Map.class);
-      return mdclasses_per_oophase;
+      return map;
+     
     } catch (Exception e) {
-      new InvalidCacheLoadException(
+      throw new InvalidCacheLoadException(
           "Unable to load cache from " + IConstants.AllMDClassesForAllOneOpsPhases_FILENAME, e);
     }
-    return mdclasses_per_oophas;
+   
   }
-
+ 
 }
 
 
