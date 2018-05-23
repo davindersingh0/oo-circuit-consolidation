@@ -1,7 +1,7 @@
 -- Added function to delete CM_CI Attributes to remove Attributes belonging to old circuit CI MD Class 
 -- deletes CmsCIAttribute 
 CREATE OR REPLACE FUNCTION cm_delete_ci_attribute(p_ci_attr_id bigint, p_df_value text, p_dj_value text, p_owner character varying, p_comments character varying)
-  RETURNS bigint 
+  RETURNS void 
   AS
 $BODY$
 DECLARE
