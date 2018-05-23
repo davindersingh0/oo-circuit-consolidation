@@ -2,7 +2,8 @@
 -- Update CI with new classid and goid
 
 CREATE OR REPLACE FUNCTION cm_update_ci_classid_classname_goid(p_ci_id bigint, p_ns_id bigint, p_class_id integer, p_goid character varying, p_ci_name character varying, p_comments character varying, p_state_id integer, p_last_rfc_id bigint, p_created_by character varying)
-  RETURNS void AS
+  RETURNS void 
+  AS
 $BODY$
 DECLARE
     l_class_id integer;
@@ -34,3 +35,6 @@ BEGIN
     values (nextval('log_pk_seq'), now(), 200, p_ci_id, coalesce(p_ci_name, l_ci_name), l_class_id, l_class_name, coalesce(p_comments, l_comments), l_state_id, coalesce(p_state_id, l_state_id), p_updated_by);
     
 END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
