@@ -11,7 +11,7 @@
 	"volume": "catalog.Volume",
 	"keyspace": "catalog.walmartlabs.Wmt_keyspace",
 	"keyspace_dbaasuser": "catalog.walmartlabs.Wmt_keyspace",
-	"os": "catalog.walmartlabs.Wmt_keyspace",
+	"os": "catalog.oneops.1.Os",
 	"platform": "catalog.Platform"
 	},
 	
