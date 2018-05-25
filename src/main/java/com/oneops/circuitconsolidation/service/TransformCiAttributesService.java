@@ -197,7 +197,9 @@ public class TransformCiAttributesService {
     sourceCmsCI.setCiGoid(
         sourceCmsCI.getNsId() + "-" + toCmsClazz.getClassId() + "-" + sourceCmsCI.getCiId());
     // TODO: //create database call for update
-
+    log.info("updating sourceCmsCI {}" ,gson.toJson(sourceCmsCI));
+    ciMapper.cmUpdateCiClassidClassnameGoid(sourceCmsCI);
+   
     return sourceCmsCI;
   }
 
@@ -224,7 +226,7 @@ public class TransformCiAttributesService {
         sourceCmsCIAttribute.setAttributeId(toCmsClazzAttribute.getAttributeId());
         log.info("Updating existing <toCmsClazzAttribute> {}",
             toCmsClazzAttribute.getAttributeName());
-        // ciMapper.updateCIAttribute(sourceCmsCIAttribute); // update attribute
+         ciMapper.updateCIAttribute(sourceCmsCIAttribute); // update attribute
         log.info("Updated existing <toCmsClazzAttribute> {}",
             toCmsClazzAttribute.getAttributeName());
 
@@ -240,7 +242,7 @@ public class TransformCiAttributesService {
         log.info("Adding new attribute <toCmsClazzAttribute> {}",
             toCmsClazzAttribute.getAttributeName());
         // publish & add attribute
-        // ciMapper.addCIAttributeAndPublish(sourceCmsCIAttribute);
+         ciMapper.addCIAttributeAndPublish(sourceCmsCIAttribute);
         log.info("Added new attribute <toCmsClazzAttribute> {}",
             toCmsClazzAttribute.getAttributeName());
 
@@ -353,7 +355,8 @@ public class TransformCiAttributesService {
 
       {
         deletedFromCMSDBCmsCIAttributeList.add(cmsCIAttribute);
-        // TODO: deleteAttribute from CMSDB
+        ciMapper.deleteCIAttribute(cmsCIAttribute);
+        
 
       }
     }

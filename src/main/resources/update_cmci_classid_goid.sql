@@ -31,7 +31,7 @@ BEGIN
     insert into cms_ci_event_queue(event_id, source_pk, source_name, event_type_id)
     values (nextval('event_pk_seq'), p_ci_id, 'cm_ci' , 200);
 
-    insert into cm_ci_log(log_id, log_time, log_event, ci_id, ci_name, class_id, class_name, comments, ci_state_id, ci_state_id_old, p_created_by)
+    insert into cm_ci_log(log_id, log_time, log_event, ci_id, ci_name, class_id, class_name, comments, ci_state_id, ci_state_id_old, updated_by)
     values (nextval('log_pk_seq'), now(), 200, p_ci_id, coalesce(p_ci_name, l_ci_name), l_class_id, l_class_name, coalesce(p_comments, l_comments), l_state_id, coalesce(p_state_id, l_state_id), p_created_by);
     
 END;
