@@ -69,6 +69,17 @@
 		<property name="mdProcessor" ref="cmsMdProcessor" />
 		
 	</bean>
+	<bean id="mappingBuilder" class="com.oneops.circuitconsolidation.mappings.MappingBuilder">
+
+		<property name="gson" ref="gson" />
+		<property name="transformCiAttributesService" ref="transformCiAttributesService" />
+		<property name="mdProcessor" ref="cmsMdProcessor" />
+
+	</bean>
+	
+	
+	
+	
 	
 
 

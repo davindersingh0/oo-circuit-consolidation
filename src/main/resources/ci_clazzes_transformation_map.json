@@ -3,5 +3,10 @@
 	"catalog.Secgroup": "catalog.oneops.1.Secgroup",
 	"catalog.Volume": "catalog.oneops.1.Volume",
 	"catalog.Fqdn": "catalog.oneops.1.Fqdn",
-	"catalog.Compute": "catalog.oneops.1.Compute"
+	"catalog.Compute": "catalog.oneops.1.Compute",
+	"catalog.User": "catalog.oneops.1.User",
+	"catalog.Java": "catalog.oneops.1.Java",
+	"catalog.walmartlabs.Apache_cassandra": "catalog.oneops.1.Apache_cassandra"
 }
+
+
