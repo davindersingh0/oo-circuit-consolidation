@@ -45,31 +45,69 @@ public class MappingBuilder {
 
     Map<String, String> CiClazzesTransformationsMap =
         transformCiAttributesService.getTransformationSupportedCiClazzesConfigsMap();
-
+    List<CmCiAttributesActionMappings> cmCiAttributesActionMappingsList = new ArrayList<CmCiAttributesActionMappings>();
+    
     for (String sourceCircuitCmsClazzName : CiClazzesTransformationsMap.keySet()) {
       String targetCircuitCmsClazzName = CiClazzesTransformationsMap.get(sourceCircuitCmsClazzName);
       log.info(
           "Staring processing for <sourceCircuitCmsClazzName> {} , <targetCircuitCmsClazzName> {}",
           sourceCircuitCmsClazzName, targetCircuitCmsClazzName);
 
-      Map<String, CmsClazzAttribute> sourceCmsClazzAttributesMap =
-          getMdAttributesMap(sourceCircuitCmsClazzName);
-      Map<String, CmsClazzAttribute> targetCmsClazzAttributesMap =
-          getMdAttributesMap(targetCircuitCmsClazzName);
-      // String sourcePack,String sourceClassname,
-      List<CmCiAttributesActionMappings> list = generateCmCiAttributesActionMap(sourcePack,
-          sourceCircuitCmsClazzName, sourceCmsClazzAttributesMap, targetPack,
-          targetCircuitCmsClazzName, targetCmsClazzAttributesMap);
+      CmsClazz sourceCmsClazz = mdProcessor.getClazz(sourceCircuitCmsClazzName);
+      CmsClazz targetCmsClazz = mdProcessor.getClazz(targetCircuitCmsClazzName);
 
-      log.info("list : " + gson.toJson(list));
+
+      Map<String, CmsClazzAttribute> sourceCmsClazzAttributesMap =
+          getMdAttributesMap(sourceCmsClazz);
+      Map<String, CmsClazzAttribute> targetCmsClazzAttributesMap =
+          getMdAttributesMap(targetCmsClazz);
+      
+     //create mapping for CMCI Table
+      CmCiAttributesActionMappings cmCiClazzIDClazzNameAndGoidActionMappings =
+          generateCmCiClazzIDClazzNameAndGoidActionMappings(sourcePack, sourceCmsClazz, targetPack, targetCmsClazz);
+      
+      cmCiAttributesActionMappingsList.add(cmCiClazzIDClazzNameAndGoidActionMappings);
+      
+    //create mapping for CMCI_Attributes Table
+      List<CmCiAttributesActionMappings> cmCiClazzAttributesActionMappings =
+          generateCmCiAttributesActionMappings(sourcePack, sourceCmsClazz, sourceCmsClazzAttributesMap,
+              targetPack, targetCmsClazz, targetCmsClazzAttributesMap);
+      
+      cmCiAttributesActionMappingsList.addAll(cmCiClazzAttributesActionMappings);
+      
+      log.info("list : " + gson.toJson(cmCiClazzAttributesActionMappings));
     }
 
+    log.info("Mapping process for CmCiAttributesMappings complete: ");
+    log.info("Number of Mappings created: "+cmCiAttributesActionMappingsList.size());
+    log.info("<cmCiAttributesActionMappingsList>: {}",gson.toJson(cmCiAttributesActionMappingsList)); 
+    
 
 
   }
 
-  private Map<String, CmsClazzAttribute> getMdAttributesMap(String cmsClazzName) {
-    CmsClazz cmsClazz = mdProcessor.getClazz(cmsClazzName);
+  private CmCiAttributesActionMappings generateCmCiClazzIDClazzNameAndGoidActionMappings(
+      String sourcePack, CmsClazz sourceCmsClazz, String targetPack, CmsClazz targetCmsClazz) {
+    
+    CmCiAttributesActionMappings cmCiAttributesActionMappings =
+        new CmCiAttributesActionMappings();
+    cmCiAttributesActionMappings.setEntityType("CMCI");
+    cmCiAttributesActionMappings.setAction("UPDATE_CMCI_CLAZZID_CLAZZNAME_GOID");
+    
+    cmCiAttributesActionMappings.setSourcePack(sourcePack);
+    cmCiAttributesActionMappings.setSourceClassId(sourceCmsClazz.getClassId());
+    cmCiAttributesActionMappings.setSourceClassname(sourceCmsClazz.getClassName());
+    
+    cmCiAttributesActionMappings.setTargetPack(targetPack);
+    cmCiAttributesActionMappings.setTargetClassId(targetCmsClazz.getClassId());
+    cmCiAttributesActionMappings.setTargetClassname(targetCmsClazz.getClassName());
+    
+    
+    return cmCiAttributesActionMappings;
+  }
+
+  private Map<String, CmsClazzAttribute> getMdAttributesMap(CmsClazz cmsClazz) {
+
     List<CmsClazzAttribute> cmsClazzAttributesList = cmsClazz.getMdAttributes();
     Map<String, CmsClazzAttribute> cmsClazzAttributesMap = new HashMap<String, CmsClazzAttribute>();
 
@@ -82,9 +120,9 @@ public class MappingBuilder {
 
   }
 
-  private List<CmCiAttributesActionMappings> generateCmCiAttributesActionMap(String sourcePack,
-      String sourceClassname, Map<String, CmsClazzAttribute> sourceCmsClazzAttributesMap,
-      String targetPack, String targetClassname,
+  private List<CmCiAttributesActionMappings> generateCmCiAttributesActionMappings(String sourcePack,
+      CmsClazz sourceCmsClazz, Map<String, CmsClazzAttribute> sourceCmsClazzAttributesMap,
+      String targetPack, CmsClazz targetCmsClazz,
       Map<String, CmsClazzAttribute> targetCmsClazzAttributesMap) {
 
     List<CmCiAttributesActionMappings> cmCiAttributesActionMappingsList =
@@ -98,23 +136,39 @@ public class MappingBuilder {
           sourceCmsClazzAttributesMap.get(sourceCircuitAttributeName);
       if (targetCmsClazzAttributesMap.containsKey(sourceCircuitAttributeName)) {
 
-
+        cmCiAttributesActionMappings.setEntityType("CMCI_ATTRIBUTE");
         cmCiAttributesActionMappings.setAction("UPDATE_SOURCE_ATTRIBUTE_ID");
-        cmCiAttributesActionMappings.setSourceCmsClazzAttributeMappings(sourcePack, sourceClassname,
-            sourceCmsClazzAttribute);
 
-        cmCiAttributesActionMappings.setTargetCmsClazzAttributeMappings(targetPack, targetClassname,
+        cmCiAttributesActionMappings.setSourcePack(sourcePack);
+        cmCiAttributesActionMappings.setSourceClassname(sourceCmsClazz.getClassName());
+        cmCiAttributesActionMappings.setSourceClassId(sourceCmsClazz.getClassId());
+        cmCiAttributesActionMappings.setSourceCmsClazzAttributeMappings(sourceCmsClazzAttribute);
+
+        cmCiAttributesActionMappings.setTargetPack(targetPack);
+        cmCiAttributesActionMappings.setTargetClassname(targetCmsClazz.getClassName());
+        cmCiAttributesActionMappings.setTargetClassId(targetCmsClazz.getClassId());
+        cmCiAttributesActionMappings.setTargetCmsClazzAttributeMappings(
             targetCmsClazzAttributesMap.get(sourceCircuitAttributeName));
 
         targetCmsClazzAttributesMap.remove(sourceCircuitAttributeName);
         cmCiAttributesActionMappingsList.add(cmCiAttributesActionMappings);
 
       } else {
+        // deleteAttribute or UnlinkFromCmSCi by deleting CIiD or setting CiId to some unused value
+        cmCiAttributesActionMappings.setEntityType("CMCI_ATTRIBUTE");
         cmCiAttributesActionMappings.setAction("DELETE_SOURCE_ATTRIBUTE_ID");
-        cmCiAttributesActionMappings.setSourceCmsClazzAttributeMappings(sourcePack, sourceClassname,
-            sourceCmsClazzAttribute);
+        cmCiAttributesActionMappings.setSourcePack(sourcePack);
+        cmCiAttributesActionMappings.setSourceClassname(sourceCmsClazz.getClassName());
+        cmCiAttributesActionMappings.setSourceClassId(sourceCmsClazz.getClassId());
+        
+
+        cmCiAttributesActionMappings.setSourceCmsClazzAttributeMappings(sourceCmsClazzAttribute);
+        cmCiAttributesActionMappings.setTargetPack(targetPack);
+        cmCiAttributesActionMappings.setTargetClassId(targetCmsClazz.getClassId());
+        cmCiAttributesActionMappings.setTargetClassname(targetCmsClazz.getClassName());
+
         cmCiAttributesActionMappingsList.add(cmCiAttributesActionMappings);
-        // deleteAttribute
+
       }
     }
 
@@ -123,19 +177,33 @@ public class MappingBuilder {
       for (CmsClazzAttribute targetCmsClazzAttribute : targetCmsClazzAttributesMap.values()) {
         CmCiAttributesActionMappings cmCiAttributesActionMappings =
             new CmCiAttributesActionMappings();
+        cmCiAttributesActionMappings.setEntityType("CMCI_ATTRIBUTE");
         cmCiAttributesActionMappings.setAction("SET_DEFAULT_ATTRIBUTE_VALUE");
-        cmCiAttributesActionMappings.setTargetCmsClazzAttributeMappings(targetPack, targetClassname,
-            targetCmsClazzAttribute);
+        cmCiAttributesActionMappings.setSourcePack(sourcePack);
+        cmCiAttributesActionMappings.setSourceClassname(sourceCmsClazz.getClassName());
+        cmCiAttributesActionMappings.setSourceClassId(sourceCmsClazz.getClassId());
+
+        cmCiAttributesActionMappings.setTargetPack(targetPack);
+        cmCiAttributesActionMappings.setTargetClassId(targetCmsClazz.getClassId());
+        cmCiAttributesActionMappings.setTargetClassname(targetCmsClazz.getClassName());
+        
+        cmCiAttributesActionMappings.setTargetCmsClazzAttributeMappings(targetCmsClazzAttribute);
         cmCiAttributesActionMappingsList.add(cmCiAttributesActionMappings);
       }
 
 
     }
+    log.info("Number of mappings created from <sourceCmsClazz> {} to <targetCmsClazz> {} is {}",sourceCmsClazz.getClassName(), targetCmsClazz.getClassName(), cmCiAttributesActionMappingsList.size());
     log.info(
-        "jsonified cmCiAttributesActionMappings: " + gson.toJson(cmCiAttributesActionMappingsList));
+        "jsonified cmCiAttributesActionMappings: {} " , gson.toJson(cmCiAttributesActionMappingsList));
+    
     return cmCiAttributesActionMappingsList;
 
 
   }
+  
+  
+  
+  
 
 }

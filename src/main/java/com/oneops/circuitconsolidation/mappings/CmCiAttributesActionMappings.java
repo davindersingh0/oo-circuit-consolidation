@@ -4,49 +4,53 @@ import com.oneops.cms.md.domain.CmsClazzAttribute;
 
 public class CmCiAttributesActionMappings {
   
-  String sourcePack;
-  String sourceClassname;
-  
+  private String sourcePack;
+  private String sourceClassname;
   private int sourceClassId;
-  private int sourceAttributeId;
+  
   private String sourceAttributeName;
+  private int sourceAttributeId;
   private String sourceDefaultValue;
 
   
-  String targetPack;
-  String targetClassname;
-  
-  private int targetAttributeId;
+  private String targetPack;
+  private String targetClassname;
   private int targetClassId;
+  
   private String targetAttributeName;
+    private int targetAttributeId;
   private String targetDefaultValue;
-  String action;
+  
+  private String action;
+  private String entityType;
 
 
-  public void setSourceCmsClazzAttributeMappings(String sourcePack,String sourceClassname, CmsClazzAttribute sourceCmsClazzAttribute) {
+  public void setSourceCmsClazzAttributeMappings(CmsClazzAttribute sourceCmsClazzAttribute) {
 
-    setSourcePack(sourcePack);
-    setSourceClassname(sourceClassname);
     
     setSourceAttributeId(sourceCmsClazzAttribute.getAttributeId());
-    setSourceClassId(sourceCmsClazzAttribute.getClassId());
     setSourceAttributeName(sourceCmsClazzAttribute.getAttributeName());
     setSourceDefaultValue(sourceCmsClazzAttribute.getDefaultValue());
 
   }
 
-  public void setTargetCmsClazzAttributeMappings(String targetPack,String targetClassname,CmsClazzAttribute targetCmsClazzAttribute) {
+  public void setTargetCmsClazzAttributeMappings(CmsClazzAttribute targetCmsClazzAttribute) {
 
-    setTargetPack(targetPack);
-    setTargetClassname(targetClassname);
-    
+   
     setTargetAttributeId(targetCmsClazzAttribute.getAttributeId());
-    setTargetClassId(targetCmsClazzAttribute.getClassId());
     setTargetAttributeName(targetCmsClazzAttribute.getAttributeName());
     setTargetDefaultValue(targetCmsClazzAttribute.getDefaultValue());
 
   }
 
+
+  public String getEntityType() {
+    return entityType;
+  }
+
+  public void setEntityType(String entityType) {
+    this.entityType = entityType;
+  }
 
   public String getSourcePack() {
     return sourcePack;
