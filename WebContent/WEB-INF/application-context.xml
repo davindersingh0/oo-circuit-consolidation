@@ -74,6 +74,8 @@
 		<property name="gson" ref="gson" />
 		<property name="transformCiAttributesService" ref="transformCiAttributesService" />
 		<property name="mdProcessor" ref="cmsMdProcessor" />
+		<property name="ooConsolidationMapper" ref="ooConsolidationMapper" />
+		
 
 	</bean>
 	

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.google.gson.Gson;
+import com.oneops.circuitconsolidation.mappings.dal.OOConsolidationMapper;
 import com.oneops.circuitconsolidation.service.TransformCiAttributesService;
 import com.oneops.cms.md.domain.CmsClazz;
 import com.oneops.cms.md.domain.CmsClazzAttribute;
@@ -24,6 +25,9 @@ public class MappingBuilder {
   @Autowired
   private CmsMdProcessor mdProcessor;
 
+  @Autowired
+  OOConsolidationMapper ooConsolidationMapper;
+  
   private final Logger log = LoggerFactory.getLogger(MappingBuilder.class);
 
 
@@ -40,12 +44,16 @@ public class MappingBuilder {
     this.mdProcessor = mdProcessor;
   }
 
+  public void setOoConsolidationMapper(OOConsolidationMapper ooConsolidationMapper) {
+    this.ooConsolidationMapper = ooConsolidationMapper;
+  }
+
   public void createCmCiAttributesMappings(String sourcePack, String targetPack) {
 
 
     Map<String, String> CiClazzesTransformationsMap =
         transformCiAttributesService.getTransformationSupportedCiClazzesConfigsMap();
-    List<CmCiAttributesActionMappings> cmCiAttributesActionMappingsList = new ArrayList<CmCiAttributesActionMappings>();
+    List<CmsCiAndCmsCiAttributesActionMappingsModel> cmCiAttributesActionMappingsList = new ArrayList<CmsCiAndCmsCiAttributesActionMappingsModel>();
     
     for (String sourceCircuitCmsClazzName : CiClazzesTransformationsMap.keySet()) {
       String targetCircuitCmsClazzName = CiClazzesTransformationsMap.get(sourceCircuitCmsClazzName);
@@ -63,13 +71,13 @@ public class MappingBuilder {
           getMdAttributesMap(targetCmsClazz);
       
      //create mapping for CMCI Table
-      CmCiAttributesActionMappings cmCiClazzIDClazzNameAndGoidActionMappings =
+      CmsCiAndCmsCiAttributesActionMappingsModel cmCiClazzIDClazzNameAndGoidActionMappings =
           generateCmCiClazzIDClazzNameAndGoidActionMappings(sourcePack, sourceCmsClazz, targetPack, targetCmsClazz);
       
       cmCiAttributesActionMappingsList.add(cmCiClazzIDClazzNameAndGoidActionMappings);
       
     //create mapping for CMCI_Attributes Table
-      List<CmCiAttributesActionMappings> cmCiClazzAttributesActionMappings =
+      List<CmsCiAndCmsCiAttributesActionMappingsModel> cmCiClazzAttributesActionMappings =
           generateCmCiAttributesActionMappings(sourcePack, sourceCmsClazz, sourceCmsClazzAttributesMap,
               targetPack, targetCmsClazz, targetCmsClazzAttributesMap);
       
@@ -86,11 +94,11 @@ public class MappingBuilder {
 
   }
 
-  private CmCiAttributesActionMappings generateCmCiClazzIDClazzNameAndGoidActionMappings(
+  private CmsCiAndCmsCiAttributesActionMappingsModel generateCmCiClazzIDClazzNameAndGoidActionMappings(
       String sourcePack, CmsClazz sourceCmsClazz, String targetPack, CmsClazz targetCmsClazz) {
     
-    CmCiAttributesActionMappings cmCiAttributesActionMappings =
-        new CmCiAttributesActionMappings();
+    CmsCiAndCmsCiAttributesActionMappingsModel cmCiAttributesActionMappings =
+        new CmsCiAndCmsCiAttributesActionMappingsModel();
     cmCiAttributesActionMappings.setEntityType("CMCI");
     cmCiAttributesActionMappings.setAction("UPDATE_CMCI_CLAZZID_CLAZZNAME_GOID");
     
@@ -120,17 +128,17 @@ public class MappingBuilder {
 
   }
 
-  private List<CmCiAttributesActionMappings> generateCmCiAttributesActionMappings(String sourcePack,
+  private List<CmsCiAndCmsCiAttributesActionMappingsModel> generateCmCiAttributesActionMappings(String sourcePack,
       CmsClazz sourceCmsClazz, Map<String, CmsClazzAttribute> sourceCmsClazzAttributesMap,
       String targetPack, CmsClazz targetCmsClazz,
       Map<String, CmsClazzAttribute> targetCmsClazzAttributesMap) {
 
-    List<CmCiAttributesActionMappings> cmCiAttributesActionMappingsList =
-        new ArrayList<CmCiAttributesActionMappings>();
+    List<CmsCiAndCmsCiAttributesActionMappingsModel> cmCiAttributesActionMappingsList =
+        new ArrayList<CmsCiAndCmsCiAttributesActionMappingsModel>();
 
     for (String sourceCircuitAttributeName : sourceCmsClazzAttributesMap.keySet()) {
-      CmCiAttributesActionMappings cmCiAttributesActionMappings =
-          new CmCiAttributesActionMappings();
+      CmsCiAndCmsCiAttributesActionMappingsModel cmCiAttributesActionMappings =
+          new CmsCiAndCmsCiAttributesActionMappingsModel();
 
       CmsClazzAttribute sourceCmsClazzAttribute =
           sourceCmsClazzAttributesMap.get(sourceCircuitAttributeName);
@@ -175,8 +183,8 @@ public class MappingBuilder {
     if (targetCmsClazzAttributesMap.size() > 0) {
       // setDefaults
       for (CmsClazzAttribute targetCmsClazzAttribute : targetCmsClazzAttributesMap.values()) {
-        CmCiAttributesActionMappings cmCiAttributesActionMappings =
-            new CmCiAttributesActionMappings();
+        CmsCiAndCmsCiAttributesActionMappingsModel cmCiAttributesActionMappings =
+            new CmsCiAndCmsCiAttributesActionMappingsModel();
         cmCiAttributesActionMappings.setEntityType("CMCI_ATTRIBUTE");
         cmCiAttributesActionMappings.setAction("SET_DEFAULT_ATTRIBUTE_VALUE");
         cmCiAttributesActionMappings.setSourcePack(sourcePack);

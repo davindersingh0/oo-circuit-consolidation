@@ -2,7 +2,7 @@ package com.oneops.circuitconsolidation.mappings;
 
 import com.oneops.cms.md.domain.CmsClazzAttribute;
 
-public class CmCiAttributesActionMappings {
+public class CmsCiAndCmsCiAttributesActionMappingsModel {
   
   private String sourcePack;
   private String sourceClassname;

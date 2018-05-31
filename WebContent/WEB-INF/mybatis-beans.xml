@@ -178,6 +178,11 @@
 		<property name="procProcessor" ref="procProcessor" />
     </bean>
     
+        <bean id="ooConsolidationMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <constructor-arg value="com.oneops.circuitconsolidation.mappings.dal.OOConsolidationMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    
     
     
      </beans>

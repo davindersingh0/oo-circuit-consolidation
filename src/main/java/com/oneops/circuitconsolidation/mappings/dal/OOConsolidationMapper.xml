@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oneops.circuitconsolidation.mappings.dal.OOConsolidationMapper">
+
+ 	 <!--cache/-->
+
+	<!--Begin: Added  deleteCIAttribute for circuit consolidation -->
+	 <update id="deleteCIAttribute" parameterType="com.oneops.cms.cm.domain.CmsCIAttribute" statementType="CALLABLE">
+	    {call cm_delete_ci_attribute(#{ciAttributeId}, #{dfValue}, #{djValue}, #{owner}, #{comments})}
+	 </update> 
+	 
+	 <update id="cmUpdateCiClassidClassnameGoid" parameterType="com.oneops.cms.cm.domain.CmsCI" statementType="CALLABLE">
+	 {call cm_update_ci_classid_classname_goid(#{ciId} ,#{nsId}, #{ciClassId}, #{ciGoid}, #{ciName}, #{comments}, #{ciStateId}, #{lastAppliedRfcId}, #{createdBy})}
+	  
+	 </update> 
+	 
+	<!--End: Added  deleteCIAttribute for circuit consolidation -->
+
+
+	 <select id="getCIById" parameterType="long" resultType="com.oneops.cms.cm.domain.CmsCI">
+		select 
+			ci.ci_id as ciId,
+			ci.ci_name as ciName,
+			ci.class_id as ciClassId,
+			cl.class_name as ciClassName,
+			cl.impl as impl,
+			ci.ns_id as nsId,
+			ns.ns_path as nsPath,
+			ci.ci_goid as ciGoid,
+			ci.comments,
+			ci.ci_state_id as ciStateId,
+			st.state_name as ciState,
+			ci.last_applied_rfc_id as lastAppliedRfcId,
+			ci.created_by as createdBy,
+			ci.updated_by as updatedBy, 
+			ci.created,
+			ci.updated
+		from cm_ci ci, md_classes cl, ns_namespaces ns, cm_ci_state st
+		where ci.ci_id = #{value}
+			and ci.class_id = cl.class_id
+			and ci.ns_id = ns.ns_id
+			and ci.ci_state_id = st.ci_state_id
+	 </select>
+
+	 
+<!-- 	<insert id="createAltNs" parameterType="map" statementType="CALLABLE">
+		{call cm_create_alt_namespace(#{nsId}, #{tag}, #{ciId})}
+	</insert>
+
+	<delete id="deleteAltNs" parameterType="long" statementType="CALLABLE">
+		{call cm_delete_alt_namespace(#{nsId}, #{ciId})}
+	</delete> -->
+
+</mapper>
