@@ -1,9 +1,14 @@
 package com.oneops.circuitconsolidation.mappings;
 
+import java.io.Serializable;
 import com.oneops.cms.md.domain.CmsClazzAttribute;
 
-public class CmsCiAndCmsCiAttributesActionMappingsModel {
+public class CmsCiAndCmsCiAttributesActionMappingsModel implements Serializable{
   
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   private String sourcePack;
   private String sourceClassname;
   private int sourceClassId;

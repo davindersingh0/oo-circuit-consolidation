@@ -48,7 +48,7 @@ public class MappingBuilder {
     this.ooConsolidationMapper = ooConsolidationMapper;
   }
 
-  public void createCmCiAttributesMappings(String sourcePack, String targetPack) {
+  public List<CmsCiAndCmsCiAttributesActionMappingsModel> createCmCiAttributesMappings(String sourcePack, String targetPack) {
 
 
     Map<String, String> CiClazzesTransformationsMap =
@@ -89,6 +89,7 @@ public class MappingBuilder {
     log.info("Mapping process for CmCiAttributesMappings complete: ");
     log.info("Number of Mappings created: "+cmCiAttributesActionMappingsList.size());
     log.info("<cmCiAttributesActionMappingsList>: {}",gson.toJson(cmCiAttributesActionMappingsList)); 
+    return cmCiAttributesActionMappingsList;
     
 
 

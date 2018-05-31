@@ -1,4 +1,7 @@
 package com.oneops.circuitconsolidation.mappings.dal;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import com.oneops.circuitconsolidation.mappings.CmsCiAndCmsCiAttributesActionMappingsModel;
 import com.oneops.cms.cm.domain.CmsCI;
 import com.oneops.cms.cm.domain.CmsCIAttribute;
 
@@ -12,9 +15,8 @@ public interface OOConsolidationMapper {
   
   // End: Added  deleteCIAttribute for circuit consolidation
   
-  CmsCI getCIById(long id);
-
-
+  public void populateCmsCiAndCmsCiAttributesActionMappings(CmsCiAndCmsCiAttributesActionMappingsModel cmsCiAndCmsCiAttributesActionMappings);
+  public void populateCmsCiAndCmsCiAttributesActionMappingsList(@Param("cmsCiAndCmsCiAttributesActionMappingsList") List<CmsCiAndCmsCiAttributesActionMappingsModel> cmsCiAndCmsCiAttributesActionMappingsList);
   
   
 }
