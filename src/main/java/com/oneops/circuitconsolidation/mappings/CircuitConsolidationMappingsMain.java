@@ -15,7 +15,7 @@ public class CircuitConsolidationMappingsMain {
     app.loadApplicationContext();
     ApplicationContext context = app.getContext();
 
-    String sourcePack = "walmartlabs-apache_cassandra";
+    String sourcePack = "wmtlabs-apache_cassandra";
     String targetPack = "oneops-apache_cassandra";
 
     MappingBuilder mappingBuilder = context.getBean(MappingBuilder.class);
@@ -25,7 +25,7 @@ public class CircuitConsolidationMappingsMain {
         mappingBuilder.createCmCiAttributesMappings(sourcePack, targetPack);
     OOConsolidationMapper ooConsolidationMapper = context.getBean(OOConsolidationMapper.class);
 
-    for (CmsCiAndCmsCiAttributesActionMappingsModel cmsCiAndCmsCiAttributesActionMappings : cmsCiAndCmsCiAttributesActionMappingsList) {
+   for (CmsCiAndCmsCiAttributesActionMappingsModel cmsCiAndCmsCiAttributesActionMappings : cmsCiAndCmsCiAttributesActionMappingsList) {
       ooConsolidationMapper
           .populateCmsCiAndCmsCiAttributesActionMappings(cmsCiAndCmsCiAttributesActionMappings);
     }

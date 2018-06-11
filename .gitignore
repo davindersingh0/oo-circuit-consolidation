@@ -7,3 +7,4 @@ target/
 test-output/
 .git
 src/test/java/com/oneops/circuitconsolidation/bkp/
+src/test/resources/data/

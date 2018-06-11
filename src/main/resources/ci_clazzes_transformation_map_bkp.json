@@ -1,0 +1,17 @@
+{
+	"catalog.Cassandra": "catalog.oneops.1.Cassandra",
+	"catalog.Secgroup": "catalog.oneops.1.Secgroup",
+	"catalog.Volume": "catalog.oneops.1.Volume",
+	"catalog.Fqdn": "catalog.oneops.1.Fqdn",
+	"catalog.Compute": "catalog.oneops.1.Compute",
+
+	"manifest.Volume": "manifest.oneops.1.Volume",
+	"manifest.Secgroup": "manifest.oneops.1.Secgroup",
+	"manifest.Ring":"manifest.oneops.1.Ring",
+	"manifest.Keypair": "manifest.oneops.1.Keypair",
+	"manifest.Fqdn": "manifest.oneops.1.Fqdn",
+	"manifest.Compute": "manifest.oneops.1.Compute",
+	"manifest.Cassandra": "manifest.oneops.1.Cassandra"
+}
+
+

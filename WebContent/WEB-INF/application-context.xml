@@ -44,7 +44,7 @@
 		<property name="cmProcessor" ref="cmsCmProcessor" />
 		<property name="mdProcessor" ref="cmsMdProcessor" />
 		<property name="validateComponentRelations" ref="validateComponentRelations" />
-		 <property name="ciMapper" ref="ciMapper" />
+		<property name="ciMapper" ref="ciMapper" />
 
 	</bean>
 
@@ -63,11 +63,11 @@
 
 	<bean id="transformCiAttributesService"
 		class="com.oneops.circuitconsolidation.service.TransformCiAttributesService">
-		
+
 		<property name="gson" ref="gson" />
 		<property name="ciMapper" ref="ciMapper" />
 		<property name="mdProcessor" ref="cmsMdProcessor" />
-		
+
 	</bean>
 	<bean id="mappingBuilder" class="com.oneops.circuitconsolidation.mappings.MappingBuilder">
 
@@ -75,14 +75,21 @@
 		<property name="transformCiAttributesService" ref="transformCiAttributesService" />
 		<property name="mdProcessor" ref="cmsMdProcessor" />
 		<property name="ooConsolidationMapper" ref="ooConsolidationMapper" />
-		
+
 
 	</bean>
-	
-	
-	
-	
-	
+
+	<bean id="ciRelationsMappings"
+		class="com.oneops.circuitconsolidation.mappings.CiRelationsMappings">
+
+		<property name="mdProcessor" ref="cmsMdProcessor" />
+		<property name="ooConsolidationMapper" ref="ooConsolidationMapper" />
+		<property name="relationMapper" ref="relationMapper" />
+	</bean>
+
+
+
+
 
 
 </beans>

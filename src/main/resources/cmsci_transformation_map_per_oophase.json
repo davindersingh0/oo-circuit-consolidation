@@ -1,4 +1,5 @@
 {
+	"design": {
 		"catalog.walmartlabs.Telegraf": "catalog.oneops.1.Telegraf",
 		"catalog.walmartlabs.Apache_cassandra": "catalog.oneops.1.Apache_cassandra",
 		"catalog.Java": "catalog.oneops.1.Java",
@@ -10,8 +11,9 @@
 		"catalog.walmartlabs.Wmt_keyspace": "catalog.oneops.1.Keyspace",
 		"catalog.walmartlabs.Jolokia_proxy": "catalog.oneops.1.Jolokia_proxy",
 		"catalog.User": "catalog.oneops.1.User",
-		"catalog.Fqdn": "catalog.oneops.1.Fqdn",
-
+		"catalog.Fqdn": "catalog.oneops.1.Fqdn"
+	},
+	"transition": {
 		"manifest.Keypair": "manifest.oneops.1.Keypair",
 		"manifest.walmartlabs.Telegraf": "manifest.oneops.1.Telegraf",
 		"manifest.walmartlabs.Jolokia_proxy": "manifest.oneops.1.Jolokia_proxy",
@@ -22,11 +24,9 @@
 		"manifest.walmartlabs.Wmt_keyspace": "manifest.oneops.1.Keyspace",
 		"manifest.Library": "manifest.oneops.1.Library",
 		"manifest.Compute": "manifest.oneops.1.Compute",
+		"manifest.Localvar": "manifest.Localvar",
 		"manifest.User": "manifest.oneops.1.User",
 		"manifest.walmartlabs.Apache_cassandra": "manifest.oneops.1.Apache_cassandra",
 		"manifest.Fqdn": "manifest.oneops.1.Fqdn"
-
-
+	}
 }
-
-

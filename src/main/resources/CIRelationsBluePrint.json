@@ -1,0 +1,74 @@
+[
+	{
+		"fromCiClazz": "catalog.Platform",
+		"toCiClazz": "catalog.oneops.1.Cassandra",
+		"relationName": "base.Requires"
+	},
+	{
+		"fromCiClazz": "catalog.Platform",
+		"toCiClazz": "catalog.oneops.1.Volume",
+		"relationName": "base.Requires"
+	},
+	{
+		"fromCiClazz": "catalog.Platform",
+		"toCiClazz": "catalog.oneops.1.Os",
+		"relationName": "base.Requires",
+		"ciRelationDefaultAttributeList": [
+			{
+				"relationAttributeName": "template",
+				"relationAttributeDfValue": "os",
+				"relationAttributeDjValue": "os"
+			},
+			{
+				"relationAttributeName": "services",
+				"relationAttributeDfValue": "compute,dns,*mirror,*ntp,*windows-domain",
+				"relationAttributeDjValue": "compute,dns,*mirror,*ntp,*windows-domain"
+			}
+		]
+	},
+	{
+		"fromCiClazz": "catalog.Platform",
+		"toCiClazz": "catalog.oneops.1.Compute",
+		"relationName": "base.Requires"
+	},
+	{
+		"fromCiClazz": "catalog.Platform",
+		"toCiClazz": "catalog.oneops.1.Fqdn",
+		"relationName": "base.Requires"
+	},
+	{
+		"fromCiClazz": "catalog.Platform",
+		"toCiClazz": "catalog.oneops.1.Secgroup",
+		"relationName": "base.Requires"
+	},
+	{
+		"fromCiClazz": "catalog.oneops.1.Cassandra",
+		"toCiClazz": "catalog.oneops.1.Volume",
+		"relationName": "catalog.DependsOn"
+	},
+	{
+		"fromCiClazz": "catalog.oneops.1.Cassandra",
+		"toCiClazz": "catalog.oneops.1.Compute",
+		"relationName": "catalog.DependsOn"
+	},
+	{
+		"fromCiClazz": "catalog.oneops.1.Volume",
+		"toCiClazz": "catalog.oneops.1.Os",
+		"relationName": "catalog.DependsOn"
+	},
+	{
+		"fromCiClazz": "catalog.oneops.1.Os",
+		"toCiClazz": "catalog.oneops.1.Compute",
+		"relationName": "catalog.DependsOn"
+	},
+	{
+		"fromCiClazz": "catalog.oneops.1.Fqdn",
+		"toCiClazz": "catalog.oneops.1.Compute",
+		"relationName": "catalog.DependsOn"
+	},
+	{
+		"fromCiClazz": "catalog.oneops.1.Compute",
+		"toCiClazz": "catalog.oneops.1.Secgroup",
+		"relationName": "catalog.DependsOn"
+	}
+]

@@ -27,7 +27,7 @@ public class MappingBuilderTest {
   }
 
 
-  @Test(enabled = false)
+  @Test(enabled = true)
 
   private void testMappings() {
 
@@ -37,6 +37,7 @@ public class MappingBuilderTest {
 
     
     List<CmsCiAndCmsCiAttributesActionMappingsModel> mappings=mappingBuilder.createCmCiAttributesMappings(sourcePack, targetPack);
+    log.info("jsonified mappings: "+gson.toJson(mappings));
   
 
   }
