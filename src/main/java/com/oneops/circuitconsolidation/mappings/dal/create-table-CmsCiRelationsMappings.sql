@@ -27,21 +27,28 @@ CREATE TABLE kloopzcm.CiClazzRelationMappings (
 		created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 */
---DROP TABLE kloopzcm.CmsCIRelationAndRelationAttributesActionMappings;
+DROP TABLE kloopzcm.CmsCIRelationAndRelationAttributesActionMappings;
 CREATE TABLE kloopzcm.CmsCIRelationAndRelationAttributesActionMappings (
 		sourcePack VARCHAR(200) ,
 		targetPack VARCHAR(200) ,
+		
 		sourceCmsCiRelationKey VARCHAR(200),
 		sourceCmsCiRelationName VARCHAR(200),
 		sourceCmsCiRelationId INTEGER,
 		sourceFromCmsCiClazzName VARCHAR(200),
 		sourceFromCmsCiClazzId INTEGER,
-		
+	  	sourceToCmsCiClazzName VARCHAR(200),
+ 		sourceToCmsCiClazzId INTEGER,
+  
+  
 		targetCmsCiRelationKey VARCHAR(200),
 		targetCmsCiRelationName VARCHAR(200),
 		targetCmsCiRelationId INTEGER,
 		targetFromCmsCiClazzName VARCHAR(200),		
-		targetFromCmsCiClazzId VARCHAR(200),		
+		targetFromCmsCiClazzId VARCHAR(200),	
+		targetToCmsCiClazzName VARCHAR(200),
+  		targetToCmsCiClazzId INTEGER,
+  
 		action VARCHAR(200),	
 		entityType VARCHAR(200),	
 		created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL

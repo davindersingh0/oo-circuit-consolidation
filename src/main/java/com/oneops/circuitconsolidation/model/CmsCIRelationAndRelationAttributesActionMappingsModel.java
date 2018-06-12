@@ -15,6 +15,10 @@ public class CmsCIRelationAndRelationAttributesActionMappingsModel implements Se
   private int sourceCmsCiRelationId;
   private String sourceFromCmsCiClazzName;
   private int sourceFromCmsCiClazzId;
+  private String sourceToCmsCiClazzName;
+  private int sourceToCmsCiClazzId;
+
+
 
   private String targetPack;
   private String targetCmsCiRelationKey;
@@ -22,6 +26,8 @@ public class CmsCIRelationAndRelationAttributesActionMappingsModel implements Se
   private int targetCmsCiRelationId;
   private String targetFromCmsCiClazzName;
   private int targetFromCmsCiClazzId;
+  private String targetToCmsCiClazzName;
+  private int targetToCmsCiClazzId;
 
   private String action;
   private String entityType;
@@ -138,6 +144,58 @@ public class CmsCIRelationAndRelationAttributesActionMappingsModel implements Se
     this.entityType = entityType;
   }
 
+  public String getSourceToCmsCiClazzName() {
+    return sourceToCmsCiClazzName;
+  }
 
+  public void setSourceToCmsCiClazzName(String sourceToCmsCiClazzName) {
+    this.sourceToCmsCiClazzName = sourceToCmsCiClazzName;
+  }
+
+  public int getSourceToCmsCiClazzId() {
+    return sourceToCmsCiClazzId;
+  }
+
+  public void setSourceToCmsCiClazzId(int sourceToCmsCiClazzId) {
+    this.sourceToCmsCiClazzId = sourceToCmsCiClazzId;
+  }
+
+  public String getTargetToCmsCiClazzName() {
+    return targetToCmsCiClazzName;
+  }
+
+  public void setTargetToCmsCiClazzName(String targetToCmsCiClazzName) {
+    this.targetToCmsCiClazzName = targetToCmsCiClazzName;
+  }
+
+  public int getTargetToCmsCiClazzId() {
+    return targetToCmsCiClazzId;
+  }
+
+  public void setTargetToCmsCiClazzId(int targetToCmsCiClazzId) {
+    this.targetToCmsCiClazzId = targetToCmsCiClazzId;
+  }
+
+  public void setSourceCmsCIRelationModel(CmsCIRelationModel cmsCIRelationModel) {
+
+    setSourceCmsCiRelationName(cmsCIRelationModel.getRelationName());
+    setSourceCmsCiRelationId(cmsCIRelationModel.getRelationId());
+    setSourceFromCmsCiClazzName(cmsCIRelationModel.getFromCiClazz());
+    setSourceFromCmsCiClazzId(cmsCIRelationModel.getFromCiClazzId());
+    setSourceToCmsCiClazzName(cmsCIRelationModel.getToCiClazz());
+    setSourceToCmsCiClazzId(cmsCIRelationModel.getToCiClazzId());
+
+  }
+
+  public void setTargetCmsCIRelationModel(CmsCIRelationModel cmsCIRelationModel) {
+
+    setTargetCmsCiRelationName(cmsCIRelationModel.getRelationName());
+    setTargetCmsCiRelationId(cmsCIRelationModel.getRelationId());
+    setTargetFromCmsCiClazzName(cmsCIRelationModel.getFromCiClazz());
+    setTargetFromCmsCiClazzId(cmsCIRelationModel.getFromCiClazzId());
+    setTargetToCmsCiClazzName(cmsCIRelationModel.getToCiClazz());
+    setTargetToCmsCiClazzId(cmsCIRelationModel.getToCiClazzId());
+
+  }
 
 }

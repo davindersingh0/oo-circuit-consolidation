@@ -14,7 +14,6 @@ import com.oneops.circuitconsolidation.mappings.CiRelationsMappingsTest;
 import com.oneops.circuitconsolidation.mappings.dal.OOConsolidationMapper;
 import com.oneops.circuitconsolidation.model.CmsCIRelationAndRelationAttributesActionMappingsModel;
 import com.oneops.circuitconsolidation.model.CmsCIRelationModel;
-import com.oneops.cms.cm.dal.CIMapper;
 
 /**
  * @author dsing17 This class is created to generate CMSCi mapping Clazzes data for populating
@@ -22,13 +21,10 @@ import com.oneops.cms.cm.dal.CIMapper;
  */
 public class CMSDalUtil_MDClazzRelations {
 
-
-
   private final Logger log = LoggerFactory.getLogger(CiRelationsMappingsTest.class);
 
   private ApplicationContext context;
   private Gson gson = new Gson();
-  private CIMapper ciMapper;
   private OOConsolidationMapper oOConsolidationMapper;
 
   @BeforeClass
@@ -36,85 +32,108 @@ public class CMSDalUtil_MDClazzRelations {
     CircuitConsolidationMain app = new CircuitConsolidationMain();
     app.loadApplicationContext();
     context = app.getContext();
-    ciMapper = context.getBean(CIMapper.class);
     oOConsolidationMapper = context.getBean(OOConsolidationMapper.class);
 
   }
 
-
+  // :TODO: update Comments for each relation since clazz names have changed, though it does not
+  // impact functionlaity but for cleanup purpose
+  // String ooPhase = IConstants.DESIGN_PHASE;
   @Test(enabled = true)
-  private void getAllCIsForNsPath() {
+  private void createCiRelationsMappings() {
 
-    // :TODO: update Comments for each relation since clazz names have changed, though it does not
-    // impact functionlaity but for cleanup purpose
+    String sourcePackCatlogName = "walmartlabs-apache_cassandra";
+    String targetPackCatlogName = "oneops-apache_cassandra";
+
     String ooPhase = IConstants.DESIGN_PHASE;
-    // String ooPhase = IConstants.TRANSITION_PHASE;
-    String envName = "dev";
+    String envName = null;
 
 
     String ns_sourcePack = "/TestOrg2/ms-wmtlabs-a-cass";
     String platformName_sourcePack = "cass";
-    String nsForPlatformCiComponents_sourcePack = CircuitconsolidationUtil
-        .getnsForPlatformCiComponents(ns_sourcePack, platformName_sourcePack, ooPhase, envName);
-
 
     String ns_targetPack = "/TestOrg2/ms-oneops-a-cass";
     String platformName_targetPack = "oneops-apache-cassandra";
-    String nsForPlatformCiComponents_targetPack = CircuitconsolidationUtil
-        .getnsForPlatformCiComponents(ns_targetPack, platformName_targetPack, ooPhase, envName);
 
 
-    List<CmsCIRelationModel> cmsCIRelation_nsForPlatformCiComponents_sourcePack =
-        oOConsolidationMapper.getCIRelations(nsForPlatformCiComponents_sourcePack, null, null, null,
-            null, null, null);
+    List<CmsCIRelationAndRelationAttributesActionMappingsModel> cmsCIRelationAndRelationAttributesActionMappingsList_designPhase =
+        createCmsCIRelationMappings(ns_sourcePack, platformName_sourcePack, ns_targetPack,
+            platformName_targetPack, ooPhase, envName, sourcePackCatlogName, targetPackCatlogName);
+   
+    log.info("jsonifiled cmsCIRelationAndRelationAttributesActionMappingsList_designPhase: "
+        + gson.toJson(cmsCIRelationAndRelationAttributesActionMappingsList_designPhase));
+    
+    
+    ooPhase = IConstants.TRANSITION_PHASE;
+    envName = "dev";
 
-    log.info(
-        "cmsCIRelation_nsForPlatformCiComponents_sourcePack <size> : {}, jsonfiled cmsCIRelation_nsForPlatformCiComponents_sourcePack: {}",
-        cmsCIRelation_nsForPlatformCiComponents_sourcePack.size(),
-        gson.toJson(cmsCIRelation_nsForPlatformCiComponents_sourcePack));
+    List<CmsCIRelationAndRelationAttributesActionMappingsModel> cmsCIRelationAndRelationAttributesActionMappingsList_transitionPhase =
+        createCmsCIRelationMappings(ns_sourcePack, platformName_sourcePack, ns_targetPack,
+            platformName_targetPack, ooPhase, envName, sourcePackCatlogName, targetPackCatlogName);
+
+    log.info("jsonifiled cmsCIRelationAndRelationAttributesActionMappingsList_transitionPhase: "
+        + gson.toJson(cmsCIRelationAndRelationAttributesActionMappingsList_transitionPhase));
+
+    publishCmsCIRelationAndRelationAttributesActionMappings(
+        cmsCIRelationAndRelationAttributesActionMappingsList_designPhase);
+
+    publishCmsCIRelationAndRelationAttributesActionMappings(
+        cmsCIRelationAndRelationAttributesActionMappingsList_transitionPhase);
+
+  }
+
+
+
+  private List<CmsCIRelationAndRelationAttributesActionMappingsModel> createCmsCIRelationMappings(
+      String ns_sourcePack, String platformName_sourcePack, String ns_targetPack,
+      String platformName_targetPack, String ooPhase, String envName, String sourcePackCatlogName,
+      String targetPackCatlogName) {
 
     Map<String, CmsCIRelationModel> cmsCIRelationTypes_sourcePack =
-        getCmsCIRelationTypesForAllCIRelationsInPack(
-            cmsCIRelation_nsForPlatformCiComponents_sourcePack);
-
-    log.info(
-        "cmsCIRelationTypes_sourcePack <size> : {}, jsonfiled cmsCIRelationTypes_sourcePack: {}",
-        cmsCIRelationTypes_sourcePack.size(), gson.toJson(cmsCIRelationTypes_sourcePack));
-
-    List<CmsCIRelationModel> cmsCIRelation_nsForPlatformCiComponents_targetPack =
-        oOConsolidationMapper.getCIRelations(nsForPlatformCiComponents_targetPack, null, null, null,
-            null, null, null);
-
-    log.info(
-        "cmsCIRelation_nsForPlatformCiComponents_targetPack <size> : {}, jsonfiled cmsCIRelation_nsForPlatformCiComponents_targetPack: {}",
-        cmsCIRelation_nsForPlatformCiComponents_targetPack.size(),
-        gson.toJson(cmsCIRelation_nsForPlatformCiComponents_targetPack));
+        getCmsCIRelationTypesForAllCIRelationsInPack(ns_sourcePack, platformName_sourcePack,
+            ooPhase, envName);
 
     Map<String, CmsCIRelationModel> cmsCIRelationTypes_targetPack =
-        getCmsCIRelationTypesForAllCIRelationsInPack(
-            cmsCIRelation_nsForPlatformCiComponents_targetPack);
+        getCmsCIRelationTypesForAllCIRelationsInPack(ns_targetPack, platformName_targetPack,
+            ooPhase, envName);
 
-    log.info(
-        "cmsCIRelationTypes_targetPack <size> : {}, jsonfiled cmsCIRelationTypes_targetPack: {}",
-        cmsCIRelationTypes_targetPack.size(), gson.toJson(cmsCIRelationTypes_targetPack));
 
     List<CmsCIRelationAndRelationAttributesActionMappingsModel> cmsCIRelationAndRelationAttributesActionMappingsList =
-        createCmsCIRelationAndRelationAttributesActionMappings("walmartlabs-apache_cassandra",
-            cmsCIRelationTypes_sourcePack, "oneops-apache_cassandra",
-            cmsCIRelationTypes_targetPack);
-    log.info("jsonifiled cmsCIRelationAndRelationAttributesActionMappingsList: "
-        + gson.toJson(cmsCIRelationAndRelationAttributesActionMappingsList));
+        createCmsCIRelationAndRelationAttributesActionMappings(sourcePackCatlogName,
+            cmsCIRelationTypes_sourcePack, targetPackCatlogName, cmsCIRelationTypes_targetPack);
 
+    return cmsCIRelationAndRelationAttributesActionMappingsList;
+  }
+
+  private Map<String, CmsCIRelationModel> getCmsCIRelationTypesForAllCIRelationsInPack(String ns,
+      String platformName, String ooPhase, String envName) {
+
+
+    String nsForPlatformCiComponents =
+        CircuitconsolidationUtil.getnsForPlatformCiComponents(ns, platformName, ooPhase, envName);
+
+    List<CmsCIRelationModel> cmsCIRelationsPlatformComponentsNsPath = oOConsolidationMapper
+        .getCIRelations(nsForPlatformCiComponents, null, null, null, null, null, null);
+
+    Map<String, CmsCIRelationModel> cmsCIRelationTypes =
+        createCmsCIRelationTypesForAllCIRelationsInPack(cmsCIRelationsPlatformComponentsNsPath);
+
+    return cmsCIRelationTypes;
+
+  }
+
+
+  private void publishCmsCIRelationAndRelationAttributesActionMappings(
+      List<CmsCIRelationAndRelationAttributesActionMappingsModel> cmsCIRelationAndRelationAttributesActionMappingsList) {
     log.info("populating mappings into CMS database");
     for (CmsCIRelationAndRelationAttributesActionMappingsModel cmsCIRelationAndRelationAttributesActionMappings : cmsCIRelationAndRelationAttributesActionMappingsList) {
       oOConsolidationMapper.populateCmsCIRelationAndRelationAttributesActionMappings(
           cmsCIRelationAndRelationAttributesActionMappings);
     }
+
     log.info("populated mappings into CMS database");
 
-
   }
-
 
 
   private List<CmsCIRelationAndRelationAttributesActionMappingsModel> createCmsCIRelationAndRelationAttributesActionMappings(
@@ -137,30 +156,16 @@ public class CMSDalUtil_MDClazzRelations {
         cmsCIRelationAndRelationAttributesActionMapping.setSourcePack(sourcePack);
         cmsCIRelationAndRelationAttributesActionMapping
             .setSourceCmsCiRelationKey(cmsCIRelationTypeKey_source);
+
         cmsCIRelationAndRelationAttributesActionMapping
-            .setSourceCmsCiRelationName(sourceCmsCIRelation.getRelationName());
-        cmsCIRelationAndRelationAttributesActionMapping
-            .setSourceCmsCiRelationId(sourceCmsCIRelation.getRelationId());
-        cmsCIRelationAndRelationAttributesActionMapping
-            .setSourceFromCmsCiClazzName(sourceCmsCIRelation.getFromCiClazz());
-        cmsCIRelationAndRelationAttributesActionMapping
-            .setSourceFromCmsCiClazzId(sourceCmsCIRelation.getFromCiClazzId());
+            .setSourceCmsCIRelationModel(sourceCmsCIRelation);
 
 
         cmsCIRelationAndRelationAttributesActionMapping.setTargetPack(targetPack);
         cmsCIRelationAndRelationAttributesActionMapping
-            .setTargetCmsCiRelationName(targetCmsCIRelation.getRelationName());
-        cmsCIRelationAndRelationAttributesActionMapping
-            .setTargetCmsCiRelationId(targetCmsCIRelation.getRelationId());
-        cmsCIRelationAndRelationAttributesActionMapping
-            .setTargetFromCmsCiClazzName(targetCmsCIRelation.getFromCiClazz());
-        cmsCIRelationAndRelationAttributesActionMapping
-            .setTargetFromCmsCiClazzId(targetCmsCIRelation.getFromCiClazzId());
+            .setTargetCmsCIRelationModel(targetCmsCIRelation);
 
         cmsCIRelationAndRelationAttributesActionMapping.setAction("NO_ACTION");
-
-        // private String targetCmsCiRelationKey;no need to set here
-
         cmsCIRelationAndRelationAttributesActionMapping.setEntityType("CMSCI_RELATION");
         /*
          * cmsCIRelationAndRelationAttributesActionMappingsList
@@ -171,13 +176,9 @@ public class CMSDalUtil_MDClazzRelations {
         cmsCIRelationAndRelationAttributesActionMapping
             .setSourceCmsCiRelationKey(cmsCIRelationTypeKey_source);
         cmsCIRelationAndRelationAttributesActionMapping
-            .setSourceCmsCiRelationName(sourceCmsCIRelation.getRelationName());
-        cmsCIRelationAndRelationAttributesActionMapping
-            .setSourceCmsCiRelationId(sourceCmsCIRelation.getRelationId());
-        cmsCIRelationAndRelationAttributesActionMapping
-            .setSourceFromCmsCiClazzName(sourceCmsCIRelation.getFromCiClazz());
-        cmsCIRelationAndRelationAttributesActionMapping
-            .setSourceFromCmsCiClazzId(sourceCmsCIRelation.getFromCiClazzId());
+            .setSourceCmsCIRelationModel(sourceCmsCIRelation);
+
+
 
         cmsCIRelationAndRelationAttributesActionMapping.setTargetPack(targetPack);
         cmsCIRelationAndRelationAttributesActionMapping.setEntityType("CMSCI_RELATION");
@@ -201,23 +202,13 @@ public class CMSDalUtil_MDClazzRelations {
       if (sourceCmsCIRelation == null) {
 
         // createRelation
-
         cmsCIRelationAndRelationAttributesActionMapping.setSourcePack(sourcePack);
         cmsCIRelationAndRelationAttributesActionMapping.setTargetPack(targetPack);
 
         cmsCIRelationAndRelationAttributesActionMapping
-            .setTargetCmsCiRelationName(targetCmsCIRelation.getRelationName());
-        cmsCIRelationAndRelationAttributesActionMapping
-            .setTargetCmsCiRelationId(targetCmsCIRelation.getRelationId());
-        cmsCIRelationAndRelationAttributesActionMapping
-            .setTargetFromCmsCiClazzName(targetCmsCIRelation.getFromCiClazz());
-        cmsCIRelationAndRelationAttributesActionMapping
-            .setTargetFromCmsCiClazzId(targetCmsCIRelation.getFromCiClazzId());
+            .setTargetCmsCIRelationModel(targetCmsCIRelation);
 
         cmsCIRelationAndRelationAttributesActionMapping.setAction("CREATE_RELATION");
-
-        // private String targetCmsCiRelationKey;no need to set here
-
         cmsCIRelationAndRelationAttributesActionMapping.setEntityType("CMSCI_RELATION");
 
         cmsCIRelationAndRelationAttributesActionMappingsList
@@ -232,7 +223,7 @@ public class CMSDalUtil_MDClazzRelations {
   }
 
 
-  private Map<String, CmsCIRelationModel> getCmsCIRelationTypesForAllCIRelationsInPack(
+  private Map<String, CmsCIRelationModel> createCmsCIRelationTypesForAllCIRelationsInPack(
       List<CmsCIRelationModel> cmsCIRelationList) {
     Map<String, CmsCIRelationModel> cmsCIRelationTypes = new TreeMap<String, CmsCIRelationModel>();
 
@@ -250,7 +241,6 @@ public class CMSDalUtil_MDClazzRelations {
   private String getMappingKey(String str) {
 
     String[] strArr = str.split("\\.");
-    log.info("strArr: " + strArr);
 
     String prefix = strArr[0];
     String suffix = strArr[strArr.length - 1];
@@ -260,8 +250,6 @@ public class CMSDalUtil_MDClazzRelations {
 
     String key = prefix + refinedSuffix;
     return key.toLowerCase();
-
-
 
   }
 
