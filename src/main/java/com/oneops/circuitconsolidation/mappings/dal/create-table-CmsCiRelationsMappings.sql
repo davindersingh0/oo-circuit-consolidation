@@ -40,7 +40,6 @@ CREATE TABLE kloopzcm.CmsCIRelationAndRelationAttributesActionMappings (
 	  	sourceToCmsCiClazzName VARCHAR(200),
  		sourceToCmsCiClazzId INTEGER,
   
-  
 		targetCmsCiRelationKey VARCHAR(200),
 		targetCmsCiRelationName VARCHAR(200),
 		targetCmsCiRelationId INTEGER,
@@ -48,6 +47,12 @@ CREATE TABLE kloopzcm.CmsCIRelationAndRelationAttributesActionMappings (
 		targetFromCmsCiClazzId VARCHAR(200),	
 		targetToCmsCiClazzName VARCHAR(200),
   		targetToCmsCiClazzId INTEGER,
+  
+  		attributeId INTEGER,
+  		relationId INTEGER,
+  		attributeName VARCHAR(200),
+  		dfValue VARCHAR(200),
+  		djValue VARCHAR(200),
   
 		action VARCHAR(200),	
 		entityType VARCHAR(200),	

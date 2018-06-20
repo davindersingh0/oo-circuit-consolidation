@@ -87,9 +87,44 @@
 		<property name="relationMapper" ref="relationMapper" />
 	</bean>
 
+	<bean id="packDefinitionUtil" class="com.oneops.circuitconsolidation.util.PackDefinitionUtil">
+
+		<property name="gson" ref="gson" />
+		<property name="ooConsolidationMapper" ref="ooConsolidationMapper" />
+		<property name="ciMapper" ref="ciMapper" />
+	</bean>
+
+	<bean id="mappingsMDClazzRelations"
+		class="com.oneops.circuitconsolidation.service.MappingsMDClazzCiRelations">
+
+		<property name="gson" ref="gson" />
+		<property name="ooConsolidationMapper" ref="ooConsolidationMapper" />
+		<property name="mdProcessor" ref="cmsMdProcessor" />
+		<property name="packDefinitionUtil" ref="packDefinitionUtil" />
+
+	</bean>
 
 
+	<bean id="ciMDClazzMappingsUtil"
+		class="com.oneops.circuitconsolidation.util.CiMDClazzMappingsUtil">
+
+		<property name="gson" ref="gson" />
+		<property name="ciMapper" ref="ciMapper" />
+
+	</bean>
 
 
+	<bean id="mappingsMDClazzCiAndCiAttributes"
+		class="com.oneops.circuitconsolidation.service.MappingsMDClazzCiAndCiAttributes">
+
+		<property name="gson" ref="gson" />
+		<property name="ciMapper" ref="ciMapper" />
+		<property name="packDefinitionUtil" ref="packDefinitionUtil" />
+		<property name="ciMDClazzMappingsUtil" ref="ciMDClazzMappingsUtil" />
+		<property name="mdProcessor" ref="cmsMdProcessor" />
+		<property name="ooConsolidationMapper" ref="ooConsolidationMapper" />
+
+
+	</bean>
 
 </beans>

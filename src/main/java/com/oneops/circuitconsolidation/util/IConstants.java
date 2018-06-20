@@ -14,9 +14,16 @@ public interface IConstants {
   String OPERATE_PHASE_CI_RELATIONS_File="operate_phase_ci_relations.json";
   String CI_CLAZZES_TRANSFORMATION_MAP_FILE= "ci_clazzes_transformation_map.json";
   String CI_RELATIONS_BLUEPRINT_FILE= "CIRelationsBluePrint.json";
-  
-  
-  
+  String DEPLOYMENT_TYPE_SINGLE="single";
+  String DEPLOYMENT_TYPE_REDUNDATNT="redundant";
+  String PUBLIC= "public";
+  String PACK_SOURCE_ONEOPS="oneops";
+  String PACK_SOURCE_WALMARTLABS="walmartlabs";
+  String PACK_NAME_APACHE_CASSANDRA="apache_cassandra";
+
+  String TRANSFORM_CMSCI="TRANSFORM_CMSCI";
+  String DELETE_CMSCI="DELETE_CMSCI";
+  String CREATE_CMSCI="CREATE_CMSCI";
   
   
 }

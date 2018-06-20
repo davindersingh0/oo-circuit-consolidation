@@ -158,47 +158,66 @@
 		statementType="CALLABLE">
 
 		insert into CmsCIRelationAndRelationAttributesActionMappings (
- 		sourcePack,
-		targetPack,
-		sourceCmsCiRelationKey,
-		sourceCmsCiRelationName,
-		sourceCmsCiRelationId,
-		sourceFromCmsCiClazzName,
-		sourceFromCmsCiClazzId,
-		
-		targetCmsCiRelationKey,
-		targetCmsCiRelationName,
-		targetCmsCiRelationId,
-		targetFromCmsCiClazzName,		
-		targetFromCmsCiClazzId,		
-		action,	
-		entityType	
+  			sourcePack,
+  			sourceCmsCiRelationKey,
+  			sourceCmsCiRelationName,
+  			sourceCmsCiRelationId,
+  			sourceFromCmsCiClazzName,
+  			sourceFromCmsCiClazzId,
+  			sourceToCmsCiClazzName,
+  			sourceToCmsCiClazzId,
+
+			targetPack,
+  			targetCmsCiRelationKey,
+  			targetCmsCiRelationName,
+  			targetCmsCiRelationId,
+  			targetFromCmsCiClazzName,
+  			targetFromCmsCiClazzId,
+  			targetToCmsCiClazzName,
+  			targetToCmsCiClazzId,
+
+  			attributeId,
+  			relationId,
+ 			attributeName,
+  			dfValue,
+  			djValue,
+  
+  			action,
+  			entityType
+  
 		)
 		values (
-		#{sourcePack},
-		#{targetPack},
-		#{sourceCmsCiRelationKey},
-		#{sourceCmsCiRelationName},
-		#{sourceCmsCiRelationId},
-		#{sourceFromCmsCiClazzName},
-		#{sourceFromCmsCiClazzId},
 		
-		#{targetCmsCiRelationKey},
-		#{targetCmsCiRelationName},
-		#{targetCmsCiRelationId},
-		#{targetFromCmsCiClazzName},		
-		#{targetFromCmsCiClazzId},		
-		#{action},	
-		#{entityType}	
+		  	#{sourcePack},
+  			#{sourceCmsCiRelationKey},
+  			#{sourceCmsCiRelationName},
+  			#{sourceCmsCiRelationId},
+  			#{sourceFromCmsCiClazzName},
+  			#{sourceFromCmsCiClazzId},
+  			#{sourceToCmsCiClazzName},
+  			#{sourceToCmsCiClazzId},
+
+			#{targetPack},
+  			#{targetCmsCiRelationKey},
+  			#{targetCmsCiRelationName},
+  			#{targetCmsCiRelationId},
+  			#{targetFromCmsCiClazzName},
+  			#{targetFromCmsCiClazzId},
+  			#{targetToCmsCiClazzName},
+  			#{targetToCmsCiClazzId},
+
+  			#{attributeId},
+  			#{relationId},
+ 			#{attributeName},
+  			#{dfValue},
+  			#{djValue},
+  
+  			#{action},
+  			#{entityType}
 		
 		)
 
 	</insert>
-	
-	
-	
-	
-	
 	
 	
 </mapper>

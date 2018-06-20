@@ -1,5 +1,6 @@
 package com.oneops.circuitconsolidation.util;
 
+import static org.testng.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.TreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.StringUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.google.gson.Gson;
@@ -14,18 +16,35 @@ import com.oneops.circuitconsolidation.mappings.CiRelationsMappingsTest;
 import com.oneops.circuitconsolidation.mappings.dal.OOConsolidationMapper;
 import com.oneops.circuitconsolidation.model.CmsCIRelationAndRelationAttributesActionMappingsModel;
 import com.oneops.circuitconsolidation.model.CmsCIRelationModel;
+import com.oneops.cms.md.domain.CmsRelation;
+import com.oneops.cms.md.domain.CmsRelationAttribute;
+import com.oneops.cms.md.service.CmsMdProcessor;
 
 /**
  * @author dsing17 This class is created to generate CMSCi mapping Clazzes data for populating
  *         ci_clazzes_transformation_map.json file
  */
-public class CMSDalUtil_MDClazzRelations {
+public class CMSDalUtil_MDClazzRelationsTest {
 
-  private final Logger log = LoggerFactory.getLogger(CiRelationsMappingsTest.class);
+  private final Logger log = LoggerFactory.getLogger(CMSDalUtil_MDClazzRelationsTest.class);
 
   private ApplicationContext context;
   private Gson gson = new Gson();
   private OOConsolidationMapper oOConsolidationMapper;
+  private CmsMdProcessor mdProcessor;
+  private PackDefinitionUtil packDefinitionUtil;
+
+  private Map<String, CmsCIRelationModel> cmsCIRelationTypesInpackDefinitionMap;
+  
+  
+  public Map<String, CmsCIRelationModel> getCmsCIRelationTypesInpackDefinitionMap() {
+    return cmsCIRelationTypesInpackDefinitionMap;
+  }
+
+  public void setCmsCIRelationTypesInpackDefinitionMap(
+      Map<String, CmsCIRelationModel> cmsCIRelationTypesInpackDefinitionMap) {
+    this.cmsCIRelationTypesInpackDefinitionMap = cmsCIRelationTypesInpackDefinitionMap;
+  }
 
   @BeforeClass
   private void init() {
@@ -33,6 +52,8 @@ public class CMSDalUtil_MDClazzRelations {
     app.loadApplicationContext();
     context = app.getContext();
     oOConsolidationMapper = context.getBean(OOConsolidationMapper.class);
+    mdProcessor= context.getBean(CmsMdProcessor.class);
+    packDefinitionUtil= context.getBean(PackDefinitionUtil.class);
 
   }
 
@@ -42,10 +63,39 @@ public class CMSDalUtil_MDClazzRelations {
   @Test(enabled = true)
   private void createCiRelationsMappings() {
 
-    String sourcePackCatlogName = "walmartlabs-apache_cassandra";
-    String targetPackCatlogName = "oneops-apache_cassandra";
+    
+    
+    // /public/walmartlabs/packs/apache_cassandra/1/single
+    // /public/walmartlabs/packs/apache_cassandra/1/redundant
 
+    // following is the oneOps ApacheCassandra Pack defination
+    // http://localhost:8080/cms-admin/ci.do?id=10750
+
+    String targetPackSource = "oneops";
+    String packName = "apache_cassandra";
+
+    String sourcePackSource = "walmartlabs";
+    
     String ooPhase = IConstants.DESIGN_PHASE;
+    String deplomentType = IConstants.DEPLOYMENT_TYPE_SINGLE;
+
+
+    String nsForPackDefinition = CircuitconsolidationUtil.getnsForPackDefinition(targetPackSource,
+        packName, ooPhase, deplomentType);
+    log.info("nsForPackDefinition: " + nsForPackDefinition);
+
+
+    
+    cmsCIRelationTypesInpackDefinitionMap =
+        packDefinitionUtil.getCiRelationsFromPackDefinition(targetPackSource, packName, ooPhase, deplomentType);
+
+    log.info("cmsCIRelationTypesInpackDefinition Design Phase: " + gson.toJson(cmsCIRelationTypesInpackDefinitionMap));
+    
+    
+    
+    String sourcePackCatlogName = sourcePackSource+"-"+packName;
+    String targetPackCatlogName = targetPackSource+"-"+packName;
+    
     String envName = null;
 
 
@@ -59,14 +109,20 @@ public class CMSDalUtil_MDClazzRelations {
     List<CmsCIRelationAndRelationAttributesActionMappingsModel> cmsCIRelationAndRelationAttributesActionMappingsList_designPhase =
         createCmsCIRelationMappings(ns_sourcePack, platformName_sourcePack, ns_targetPack,
             platformName_targetPack, ooPhase, envName, sourcePackCatlogName, targetPackCatlogName);
-   
+
     log.info("jsonifiled cmsCIRelationAndRelationAttributesActionMappingsList_designPhase: "
         + gson.toJson(cmsCIRelationAndRelationAttributesActionMappingsList_designPhase));
-    
-    
+
+
     ooPhase = IConstants.TRANSITION_PHASE;
     envName = "dev";
 
+    nsForPackDefinition = CircuitconsolidationUtil.getnsForPackDefinition(targetPackSource,
+        packName, ooPhase, deplomentType);
+    
+    cmsCIRelationTypesInpackDefinitionMap =
+        packDefinitionUtil.getCiRelationsFromPackDefinition(targetPackSource, packName, ooPhase, deplomentType);
+    
     List<CmsCIRelationAndRelationAttributesActionMappingsModel> cmsCIRelationAndRelationAttributesActionMappingsList_transitionPhase =
         createCmsCIRelationMappings(ns_sourcePack, platformName_sourcePack, ns_targetPack,
             platformName_targetPack, ooPhase, envName, sourcePackCatlogName, targetPackCatlogName);
@@ -74,6 +130,7 @@ public class CMSDalUtil_MDClazzRelations {
     log.info("jsonifiled cmsCIRelationAndRelationAttributesActionMappingsList_transitionPhase: "
         + gson.toJson(cmsCIRelationAndRelationAttributesActionMappingsList_transitionPhase));
 
+  
     publishCmsCIRelationAndRelationAttributesActionMappings(
         cmsCIRelationAndRelationAttributesActionMappingsList_designPhase);
 
@@ -213,6 +270,14 @@ public class CMSDalUtil_MDClazzRelations {
 
         cmsCIRelationAndRelationAttributesActionMappingsList
             .add(cmsCIRelationAndRelationAttributesActionMapping);
+
+        
+        populateCmsCIRelationAttributesMappings(
+            cmsCIRelationAndRelationAttributesActionMappingsList, cmsCIRelationTypeKey_target,
+            sourcePack, targetPack, targetCmsCIRelation);
+        log.info("cmsCIRelationTypeKey_target: " + cmsCIRelationTypeKey_target);
+
+
         continue;
       }
 
@@ -222,6 +287,62 @@ public class CMSDalUtil_MDClazzRelations {
     return cmsCIRelationAndRelationAttributesActionMappingsList;
   }
 
+
+  private void populateCmsCIRelationAttributesMappings(
+      List<CmsCIRelationAndRelationAttributesActionMappingsModel> cmsCIRelationAndRelationAttributesActionMappingsList,
+      String cmsCIRelationTypeKey_target, String sourcePack, String targetPack,
+      CmsCIRelationModel targetCmsCIRelation) {
+
+    
+    String relationName=targetCmsCIRelation.getRelationName();
+    
+    CmsRelation relationClazz = mdProcessor.getRelation(relationName);
+    log.info("relationClazz: :" + gson.toJson(relationClazz));
+    
+    for (CmsRelationAttribute relationAttr : relationClazz.getMdAttributes()) {
+    
+      CmsCIRelationAndRelationAttributesActionMappingsModel cmsCIRelationAndRelationAttributesActionMapping =
+          new CmsCIRelationAndRelationAttributesActionMappingsModel();
+
+      cmsCIRelationAndRelationAttributesActionMapping.setSourcePack(sourcePack);
+      cmsCIRelationAndRelationAttributesActionMapping.setTargetPack(targetPack);
+
+      cmsCIRelationAndRelationAttributesActionMapping.setAction("ADD_RELATION_ATTRIBUTE");
+      cmsCIRelationAndRelationAttributesActionMapping.setEntityType("CMSCI_RELATION_ATTRIBUTE");
+
+      cmsCIRelationAndRelationAttributesActionMapping
+          .setTargetCmsCIRelationModel(targetCmsCIRelation);
+
+      cmsCIRelationAndRelationAttributesActionMapping.setRelationId(relationAttr.getRelationId());
+      cmsCIRelationAndRelationAttributesActionMapping.setAttributeId(relationAttr.getAttributeId());
+      cmsCIRelationAndRelationAttributesActionMapping.setAttributeName(relationAttr.getAttributeName());
+     // cmsCIRelationAttribute.setComments("updated for circuit consolidation");
+      
+      // get values from pack definition
+      log.info("cmsCIRelationTypeKey_target: "+cmsCIRelationTypeKey_target);
+      log.info("cmsCIRelationTypesInpackDefinitionMap: "+gson.toJson(cmsCIRelationTypesInpackDefinitionMap));
+      CmsCIRelationModel CmsCIRelationFromPackDefinition=cmsCIRelationTypesInpackDefinitionMap.get(cmsCIRelationTypeKey_target);
+      log.info("CmsCIRelationFromPackDefinition: "+gson.toJson(CmsCIRelationFromPackDefinition));
+      
+      String dfValueFromPackDefinition=CmsCIRelationFromPackDefinition.getAttributes().get(relationAttr.getAttributeName()).getDfValue();
+      String djValueFromPackDefinition=CmsCIRelationFromPackDefinition.getAttributes().get(relationAttr.getAttributeName()).getDjValue();
+      log.info("dfValueFromPackDefinition: "+dfValueFromPackDefinition);
+      log.info("djValueFromPackDefinition: "+djValueFromPackDefinition);
+ 
+      if (!relationAttr.isMandatory() && StringUtils.isEmpty(dfValueFromPackDefinition) && StringUtils.isEmpty(djValueFromPackDefinition)) {
+        continue;
+      }
+      
+      cmsCIRelationAndRelationAttributesActionMapping.setDfValue(dfValueFromPackDefinition);
+      cmsCIRelationAndRelationAttributesActionMapping.setDjValue(djValueFromPackDefinition);
+
+      cmsCIRelationAndRelationAttributesActionMappingsList
+      .add(cmsCIRelationAndRelationAttributesActionMapping);
+
+    }
+    
+
+  }
 
   private Map<String, CmsCIRelationModel> createCmsCIRelationTypesForAllCIRelationsInPack(
       List<CmsCIRelationModel> cmsCIRelationList) {
@@ -272,12 +393,11 @@ public class CMSDalUtil_MDClazzRelations {
     log.info("Jolokia_proxyKey: " + Jolokia_proxyKey);
     log.info("SecgroupKey: " + SecgroupKey);
 
+    assertEquals(Wmt_keyspacekey, "catalogkeyspace");
+    assertEquals(Apache_cassandrakey, "catalogcassandra");
+    assertEquals(Jolokia_proxyKey, "catalogproxy");
+    assertEquals(SecgroupKey, "catalogsecgroup");
 
-
-    /*
-     * assertEquals(Wmt_keyspacekey, "catalogkeyspace"); assertEquals(Apache_cassandrakey,
-     * "catalogcassandra");
-     */
 
   }
 

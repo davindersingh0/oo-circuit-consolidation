@@ -29,6 +29,13 @@ public class CmsCIRelationAndRelationAttributesActionMappingsModel implements Se
   private String targetToCmsCiClazzName;
   private int targetToCmsCiClazzId;
 
+  // CI Relation Attributes
+  private int attributeId;
+  private int relationId;
+  private String attributeName;
+  private String dfValue;
+  private String djValue;
+  
   private String action;
   private String entityType;
 
@@ -196,6 +203,46 @@ public class CmsCIRelationAndRelationAttributesActionMappingsModel implements Se
     setTargetToCmsCiClazzName(cmsCIRelationModel.getToCiClazz());
     setTargetToCmsCiClazzId(cmsCIRelationModel.getToCiClazzId());
 
+  }
+
+  public int getAttributeId() {
+    return attributeId;
+  }
+
+  public void setAttributeId(int attributeId) {
+    this.attributeId = attributeId;
+  }
+
+  public int getRelationId() {
+    return relationId;
+  }
+
+  public void setRelationId(int relationId) {
+    this.relationId = relationId;
+  }
+
+  public String getAttributeName() {
+    return attributeName;
+  }
+
+  public void setAttributeName(String attributeName) {
+    this.attributeName = attributeName;
+  }
+
+  public String getDfValue() {
+    return dfValue;
+  }
+
+  public void setDfValue(String dfValue) {
+    this.dfValue = dfValue;
+  }
+
+  public String getDjValue() {
+    return djValue;
+  }
+
+  public void setDjValue(String djValue) {
+    this.djValue = djValue;
   }
 
 }

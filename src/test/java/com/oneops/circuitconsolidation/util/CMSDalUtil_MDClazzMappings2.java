@@ -19,7 +19,7 @@ import com.oneops.cms.cm.domain.CmsCI;
  * @author dsing17 This class is created to generate CMSCi mapping Clazzes data for populating
  *         ci_clazzes_transformation_map.json file
  */
-public class CMSDalUtil_MDClazzMappings {
+public class CMSDalUtil_MDClazzMappings2 {
 
 
 
@@ -59,18 +59,17 @@ public class CMSDalUtil_MDClazzMappings {
         .getnsForPlatformCiComponents(ns_targetPack, platformName_targetPack, ooPhase, envName);
 
 
-    List<Map<String, String>> mapppings = getMDClazzMappingsForSourceAndTartgetPacks(
+    List<CmsCiTransformationModel> mapppings = getMDClazzMappingsForSourceAndTartgetPacks(
         nsForPlatformCiComponents_sourcePack, nsForPlatformCiComponents_targetPack);
 
     log.info("mapppings for {} phase : {}", ooPhase, gson.toJson(mapppings));
-
 
 
   }
 
 
 
-  private List<Map<String, String>> getMDClazzMappingsForSourceAndTartgetPacks(
+  private List<CmsCiTransformationModel> getMDClazzMappingsForSourceAndTartgetPacks(
       String nsForPlatformCiComponents_sourcePack, String nsForPlatformCiComponents_targetPack) {
 
     List<CmsCI> cmsCIListin_sourcePack =
@@ -87,17 +86,18 @@ public class CMSDalUtil_MDClazzMappings {
     Map<String, CmsCI> supportedClazzesMap_targetPack =
         getSupportedClazzesMap(cmsCIListin_targetPack);
 
-    List<Map<String, String>> mapppings =
+    List<CmsCiTransformationModel> mapppings =
         getMappings(supportedClazzesMap_sourcePack, supportedClazzesMap_targetPack);
 
     return mapppings;
   }
 
 
-  private List<Map<String, String>> getMappings(Map<String, CmsCI> supportedClazzesMap_sourcePack,
+  private List<CmsCiTransformationModel> getMappings(
+      Map<String, CmsCI> supportedClazzesMap_sourcePack,
       Map<String, CmsCI> supportedClazzesMap_targetPack) {
 
-    List<Map<String, String>> mapppingsList = new ArrayList<Map<String, String>>();
+    List<CmsCiTransformationModel> mapppingsList = new ArrayList<CmsCiTransformationModel>();
 
 
     Map<String, CmsCI> sourceClazzesTrasnformedKeySetmap =
@@ -106,10 +106,12 @@ public class CMSDalUtil_MDClazzMappings {
         getClazzesMapForComparison(supportedClazzesMap_targetPack);
 
 
+
     for (String sourceClazzesMappingKey : sourceClazzesTrasnformedKeySetmap.keySet()) {
-      Map<String, String> clazzesMap = new HashMap<String, String>();
+
       log.info(
           "check mapping in target pack for <sourceClazzesMappingKey>:" + sourceClazzesMappingKey);
+      CmsCiTransformationModel cmsCiTransformationModel = new CmsCiTransformationModel();
 
       CmsCI sourcePackCmsCI = sourceClazzesTrasnformedKeySetmap.get(sourceClazzesMappingKey);
       CmsCI targetPackCmsCI = targetClazzesTrasnformedKeySetmap.get(sourceClazzesMappingKey);
@@ -117,16 +119,20 @@ public class CMSDalUtil_MDClazzMappings {
       if (targetPackCmsCI != null) {
         log.info("corresponding mapping found in target pack for <sourceClazzesMappingKey>: "
             + sourceClazzesMappingKey);
-        clazzesMap.put(sourcePackCmsCI.getCiClassName(), targetPackCmsCI.getCiClassName());
+
+        cmsCiTransformationModel.setCiAction("TRANSFORM_CMSCI");
+        cmsCiTransformationModel.setSourceCiClazzName(sourcePackCmsCI.getCiClassName());
+        cmsCiTransformationModel.setTargetCiClazzName(targetPackCmsCI.getCiClassName());
       } else {
         log.info(
             "corresponding mapping not found in target pack, mark CI for deletion <sourceClazzesMappingKey>: "
                 + sourceClazzesMappingKey);
+        cmsCiTransformationModel.setCiAction("DELETE_CMSCI");
+        cmsCiTransformationModel.setSourceCiClazzName(sourcePackCmsCI.getCiClassName());
 
-        clazzesMap.put(sourcePackCmsCI.getCiClassName(), "DELETE_CMSCI");
       }
 
-      mapppingsList.add(clazzesMap);
+      mapppingsList.add(cmsCiTransformationModel);
     }
 
     for (String targetClazzesMappingKey : targetClazzesTrasnformedKeySetmap.keySet()) {
@@ -138,11 +144,16 @@ public class CMSDalUtil_MDClazzMappings {
       CmsCI targetPackCmsCI = targetClazzesTrasnformedKeySetmap.get(targetClazzesMappingKey);
 
       if (sourcePackCmsCI == null) {
+        CmsCiTransformationModel cmsCiTransformationModel = new CmsCiTransformationModel();
         log.info(
             "corresponding mapping not found in source pack for <targetClazzesMappingKey>:{} , mark CMSCI for create",
             targetClazzesMappingKey);
         clazzesMap.put(targetPackCmsCI.getCiClassName(), "CREATE_CMSCI");
-        mapppingsList.add(clazzesMap);
+
+        cmsCiTransformationModel.setCiAction("CREATE_CMSCI");
+        cmsCiTransformationModel.setTargetCiClazzName(targetPackCmsCI.getCiClassName());
+
+        mapppingsList.add(cmsCiTransformationModel);
         continue;
       }
 
@@ -180,18 +191,6 @@ public class CMSDalUtil_MDClazzMappings {
     return supportedClazzesHashMap;
   }
 
-
-/*  private String getMappingKey(String str) {
-
-    String[] strArr = str.split("\\.");
-    log.info("strArr: " + strArr);
-
-    String key = strArr[0] + strArr[strArr.length - 1];
-    return key;
-
-
-  }*/
-
   private String getMappingKey(String str) {
 
     String[] strArr = str.split("\\.");
@@ -206,4 +205,39 @@ public class CMSDalUtil_MDClazzMappings {
     return key.toLowerCase();
 
   }
+
+  private class CmsCiTransformationModel {
+
+    String ciAction;
+    String SourceCiClazzName;
+    String targetCiClazzName;
+
+    public String getCiAction() {
+      return ciAction;
+    }
+
+    public void setCiAction(String ciAction) {
+      this.ciAction = ciAction;
+    }
+
+    public String getSourceCiClazzName() {
+      return SourceCiClazzName;
+    }
+
+    public void setSourceCiClazzName(String sourceCiClazzName) {
+      SourceCiClazzName = sourceCiClazzName;
+    }
+
+    public String getTargetCiClazzName() {
+      return targetCiClazzName;
+    }
+
+    public void setTargetCiClazzName(String targetCiClazzName) {
+      this.targetCiClazzName = targetCiClazzName;
+    }
+
+
+
+  }
+
 }
