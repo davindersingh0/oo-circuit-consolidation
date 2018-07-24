@@ -29,6 +29,7 @@ CREATE TABLE kloopzcm.CiClazzRelationMappings (
 */
 DROP TABLE kloopzcm.CmsCIRelationAndRelationAttributesActionMappings;
 CREATE TABLE kloopzcm.CmsCIRelationAndRelationAttributesActionMappings (
+		ooPhase VARCHAR(200) NOT NULL,
 		sourcePack VARCHAR(200) ,
 		targetPack VARCHAR(200) ,
 		

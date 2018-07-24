@@ -307,10 +307,12 @@ public class MappingsMDClazzCiRelations {
   }
 
   
-  public void publishCmsCIRelationAndRelationAttributesActionMappings(
+  public void publishCmsCIRelationAndRelationAttributesActionMappings(String ooPhase, 
       List<CmsCIRelationAndRelationAttributesActionMappingsModel> cmsCIRelationAndRelationAttributesActionMappingsList) {
     log.info("populating mappings into CMS database");
     for (CmsCIRelationAndRelationAttributesActionMappingsModel cmsCIRelationAndRelationAttributesActionMappings : cmsCIRelationAndRelationAttributesActionMappingsList) {
+     
+      cmsCIRelationAndRelationAttributesActionMappings.setOoPhase(ooPhase);
       ooConsolidationMapper.populateCmsCIRelationAndRelationAttributesActionMappings(
           cmsCIRelationAndRelationAttributesActionMappings);
     }

@@ -32,6 +32,7 @@
 		statementType="CALLABLE">
 
 		insert into CmsCiAndCmsCiAttributesActionMappings (
+		ooPhase,
 		sourcePack,
 		sourceClassname,
 		sourceClassId,
@@ -48,6 +49,7 @@
 		entityType
 		)
 		values (
+		#{ooPhase},
 		#{sourcePack},
 		#{sourceClassname},
 		#{sourceClassId},
@@ -158,6 +160,7 @@
 		statementType="CALLABLE">
 
 		insert into CmsCIRelationAndRelationAttributesActionMappings (
+			ooPhase,
   			sourcePack,
   			sourceCmsCiRelationKey,
   			sourceCmsCiRelationName,
@@ -188,6 +191,7 @@
 		)
 		values (
 		
+			#{ooPhase},
 		  	#{sourcePack},
   			#{sourceCmsCiRelationKey},
   			#{sourceCmsCiRelationName},

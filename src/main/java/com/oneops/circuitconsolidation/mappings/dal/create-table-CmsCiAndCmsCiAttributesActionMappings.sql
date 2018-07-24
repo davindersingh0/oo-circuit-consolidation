@@ -18,16 +18,18 @@
 		"entityType": "CMCI_ATTRIBUTE"
 	}
 */
+DROP TABLE kloopzcm.CmsCiAndCmsCiAttributesActionMappings;
 CREATE TABLE kloopzcm.CmsCiAndCmsCiAttributesActionMappings (
+		ooPhase VARCHAR(200) NOT NULL,
 		sourcePack VARCHAR(200) NOT NULL,
-		sourceClassname VARCHAR(200) NOT NULL,
-		sourceClassId BIGINT NOT NULL,
+		sourceClassname VARCHAR(200),
+		sourceClassId BIGINT,
 		sourceAttributeName VARCHAR(200) ,
 		sourceAttributeId BIGINT,
 		sourceDefaultValue VARCHAR(200),
 		targetPack VARCHAR(200) NOT NULL,
-		targetClassname VARCHAR(200) NOT NULL,
-		targetClassId BIGINT NOT NULL,
+		targetClassname VARCHAR(200) ,
+		targetClassId BIGINT,
 		targetAttributeName VARCHAR(200),
 		targetAttributeId BIGINT,
 		targetDefaultValue VARCHAR(200),

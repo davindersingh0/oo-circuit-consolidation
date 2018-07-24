@@ -9,6 +9,7 @@ import com.oneops.circuitconsolidation.service.MappingsMDClazzCiRelations;
 
 public class MappingsMDClazzCiRelationsTest {
 
+  // NOTE: This is the main class being used to load transformation mappings for CI relations
   private ApplicationContext context;
   private MappingsMDClazzCiRelations mappingsMDClazzRelations;
   
@@ -31,12 +32,12 @@ public class MappingsMDClazzCiRelationsTest {
     String deplomentType = IConstants.DEPLOYMENT_TYPE_SINGLE;
     
     List<CmsCIRelationAndRelationAttributesActionMappingsModel> ciRelationsMappings_designPhase= mappingsMDClazzRelations.createCiRelationsMappings(packSource, packName, ooPhase, deplomentType);
-    mappingsMDClazzRelations.publishCmsCIRelationAndRelationAttributesActionMappings(ciRelationsMappings_designPhase);
+    mappingsMDClazzRelations.publishCmsCIRelationAndRelationAttributesActionMappings(ooPhase, ciRelationsMappings_designPhase);
  
      ooPhase = IConstants.TRANSITION_PHASE;
     
     List<CmsCIRelationAndRelationAttributesActionMappingsModel> ciRelationsMappings_transitionPhase= mappingsMDClazzRelations.createCiRelationsMappings(packSource, packName, ooPhase, deplomentType);
-    mappingsMDClazzRelations.publishCmsCIRelationAndRelationAttributesActionMappings(ciRelationsMappings_transitionPhase);
+    mappingsMDClazzRelations.publishCmsCIRelationAndRelationAttributesActionMappings(ooPhase, ciRelationsMappings_transitionPhase);
  
     
   

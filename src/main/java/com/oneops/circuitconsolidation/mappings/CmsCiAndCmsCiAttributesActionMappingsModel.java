@@ -9,6 +9,8 @@ public class CmsCiAndCmsCiAttributesActionMappingsModel implements Serializable{
    * 
    */
   private static final long serialVersionUID = 1L;
+  
+  String ooPhase;
   private String sourcePack;
   private String sourceClassname;
   private int sourceClassId;
@@ -48,6 +50,14 @@ public class CmsCiAndCmsCiAttributesActionMappingsModel implements Serializable{
 
   }
 
+
+  public String getOoPhase() {
+    return ooPhase;
+  }
+
+  public void setOoPhase(String ooPhase) {
+    this.ooPhase = ooPhase;
+  }
 
   public String getEntityType() {
     return entityType;
