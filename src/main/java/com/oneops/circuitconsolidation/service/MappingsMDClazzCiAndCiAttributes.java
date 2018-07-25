@@ -132,13 +132,13 @@ public class MappingsMDClazzCiAndCiAttributes {
           String createCiClazz = cmsCiTransformationModel.getTargetCiClazzName().toLowerCase();
           if (createCiClazz.contains(".oneops.1.os") && ooPhase.equals(IConstants.DESIGN_PHASE)) {
 
-            createCiClazzesMap.put("catalog.oneops.1.Compute",
+            createCiClazzesMap.put("catalog.Compute",
                 cmsCiTransformationModel.getTargetCiClazzName());
           }
           if (createCiClazz.contains(".oneops.1.os")
               && ooPhase.equals(IConstants.TRANSITION_PHASE)) {
 
-            createCiClazzesMap.put("manifest.oneops.1.Compute",
+            createCiClazzesMap.put("manifest.Compute",
                 cmsCiTransformationModel.getTargetCiClazzName());
           }
 
